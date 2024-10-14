@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+body {
+    margin: 0; /* Removes default margin */
+    padding: 0;
+    margin-left: 250px; /* Shift the main content to the right of the sidebar */
+    background-color: rgba(255, 255, 255, 0.541); /* Ensure your background color is applied */
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+/* Sidebar image/logo styling */
+.header {
+    display: flex;             /* Use flexbox for centering */
+    justify-content: center;    /* Horizontally center the logo */
+    align-items: center;        /* Vertically center if needed */
+    margin-bottom: 15px;        /* Add space below the logo */
+}
+
+.sidebar-logo {
+    width: 100px;               /* Set the width of the logo */
+    height: auto;               /* Maintain aspect ratio */
+    margin-top: 10px;           /* Add top margin if needed */
+}
+
+
+/* Adjust the size for smaller screens */
+@media screen and (max-width: 768px) {
+    .sidebar-logo {
+        width: 60px; /* Reduce logo size on smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sidebar-logo {
+        width: 40px; /* Further reduce logo size on mobile */
+    }
+}
+
+
+
+/* Sidebar styling */
+.sidebar {
+    position: fixed;
+    left: 20px;
+    top: 40px;
+    width: 250px; /* Default sidebar width */
+    height: 85%;
+    background-color: hsl(260, 43%, 99%);
+    color: rgb(10, 0, 0);
+    padding: 20px;
+    box-shadow: 2px 0 3px rgba(56, 56, 56, 0.5);
+    overflow: hidden;
+    border-radius: 10px;
+    transition: width 0.3s ease-in-out; /* Smooth width transition */
+}
+.side {
+    margin-top: 60px;
+}
+
+/* Sidebar items */
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+    padding-right: 10px;
+}
+
+.sideImg {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    margin-left: 25px;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.SidebarText {
+    color: inherit;
+    text-decoration: none;
+    margin-left: 15px;
+    transition: opacity 0.3s ease-in-out; /* Smooth transition for hiding text */
+}
+
+/* Hide text when the sidebar shrinks */
+.sidebar.minimized .SidebarText {
+    opacity: 0; /* Hide the text */
+    margin-left: 0;
+}
+
+.sidebar li:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.sidebar li:hover .SidebarText {
+    color: #000;
+    font-weight: bold;
+}
+
+.sidebar li:hover .sideImg {
+    transform: scale(1.1);
+}
+
+/* Dropdown arrow for menu items */
+.menu-item {
+    position: relative;
+    display: block;
+}
+
+.dropdown-arrow {
+    margin-left: auto;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Submenu */
+.submenu {
+    height: 0; /* Keep the submenu hidden by default */
+    overflow: hidden; /* Prevent content overflow */
+    list-style-type: none;
+    padding: 0; /* Remove padding to align submenu with menu */
+    margin-top: 5px; /* Space between menu and submenu */
+    background-color: hsl(260, 43%, 99%);
+    transition: height 0.3s ease-out;
+    display: flex; /* Use flexbox for submenu */
+    flex-direction: column; /* Stack submenu items vertically */
+    align-items: flex-start; /* Align items to the left */
+    position: relative; /* Set positioning context */
+    left: 27%; /* Align submenu with menu item */
+    width: 75%;
+}
+
+/* Align submenu items while keeping text left-aligned */
+.submenu li {
+    width: 100%; /* Ensure items take full width */
+    text-align: left; /* Align the text to the left */
+    margin: 0; /* Reset margin */
+}
+
+/* Submenu links */
+.submenu-link {
+    color: inherit;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    padding: 5px 10px; /* Adjust padding as necessary */
+    width: 50%; /* Set a width for the submenu links */
+    text-align: left; /* Keep text left-aligned */
+}
+
+/* Optional hover effects */
+.submenu-link:hover {
+    color: #000;
+    font-weight: bold;
+}
+
+/* Adjust submenu position to match menu item */
+.menu-item {
+    position: relative; /* Set position for absolute submenu positioning */
+}
+
+.menu-item.active + .submenu {
+    height: auto; /* Allow height to adjust when active */
+}
+
+/* Show submenu when active */
+.menu-item.active + .submenu {
+    display: block; /* Show the submenu when the parent menu item is active */
+    
+}
+
+/* RESPONSIVE DESIGN */
+
+/* For screens smaller than 768px */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 80px; /* Shrink sidebar width */
+    }
+
+    .body {
+        margin-left: 80px; /* Adjust body margin when sidebar is smaller */
+    }
+
+    .sideImg {
+        width: 25px;
+        height: 25px;
+    }
+
+    /* Hide the sidebar text */
+    .SidebarText {
+        display: none;
+    }
+
+    /* Adjust padding for submenu on smaller screens */
+    .submenu {
+        padding-left: 15px;
+    }
+}
+
+/* For screens smaller than 480px (mobile view) */
+@media screen and (max-width: 480px) {
+    .sidebar {
+        width: 50px; /* Further reduce sidebar width */
+    }
+
+    .body {
+        margin-left: 50px; /* Further reduce body margin */
+    }
+
+    .sideImg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Adjust padding for submenu on very small screens */
+    .submenu {
+        padding-left: 10px;
+    }
+}

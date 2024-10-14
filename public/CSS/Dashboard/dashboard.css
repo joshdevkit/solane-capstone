@@ -1,0 +1,292 @@
+/* Main container for the dashboard content */
+.dashboard-content {
+    position: fixed;
+    padding: 10px;
+    margin-left: 70px;
+    width: 77%;
+    background-color: none;
+    top: 40px;
+    height: 85%;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Flex container for the heading and boxes in TotalCost section */
+.TotalFlex {
+    display: flex; /* Enables flexbox layout */
+    justify-content: space-between; /* Distributes space between the text and boxes */
+    align-items: flex-start; /* Aligns items at the start of the container */
+}
+
+/* Container for the text elements in TotalCost section */
+.text-container {
+    margin-left: 30px;
+    color: rgb(87, 88, 90);
+}
+
+/* Container for the boxes in TotalCost section */
+.boxes-container {
+    display: flex; /* Arrange boxes in a row */
+    gap: 30px; /* Space between boxes */
+    margin-right: 40px;
+}
+
+/* Inner flex container for content inside each box */
+.box-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* Styling for individual content boxes */
+.total-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 3px;
+    display: flex;
+    border: 1px solid #d1d5db;
+}
+
+/* Specific styles for smaller boxes like Total Sales, Total Cost, etc. */
+.small-box {
+    height: 80px;
+    width: 180px;
+    background-color: #f4f6f8;
+    border-radius: 5px;
+}
+
+/* Styling for images inside the total boxes */
+.totalImg {
+    width: 60px;
+    height: 50px;
+}
+
+/* Section for text elements inside each box */
+.text-section {
+    display: flex;
+    flex-direction: column; /* Arrange text vertically */
+    justify-content: flex-end; /* Align text to the bottom */
+    margin-left: 10px;
+}
+
+/* Styling for the numbers displayed inside the boxes */
+.text-section p {
+    margin-top: auto; /* Push the total number to the bottom */
+    font-size: 18px; /* Optional: Adjust font size for emphasis */
+}
+
+/* Flex container for both Overview and Revenue Vs Cost sections */
+.overviewContent {
+    display: flex;
+    justify-content: space-between; /* Space between the two containers */
+    width: 97.8%;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 9px; /* Adds space between the two containers */
+    height: 80%;
+    margin-left: 10px;
+}
+
+/* General styling for overview and revenue vs cost containers */
+.overview-container {
+    background-color: #f4f6f8;
+    padding: 15px;
+    border-radius: 7px;
+    border: 1px solid #d1d5db;
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header section that includes the title and "This Month" dropdown */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Styling for the title text in overview sections */
+.Overview-text p {
+    margin: 0;
+    font-weight: bold;
+    color: #4b5563;
+}
+
+/* Styling for the chart details (numbers displayed on charts) */
+.chart-details {
+    display: flex;
+    justify-content: flex-start;
+    color: #6b7280;
+    margin-left: 8px;
+}
+
+/* Styling for paragraph elements inside chart details */
+.chart-details p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: -60px;
+}
+
+/* Labels for the charts */
+.chart-labels {
+    display: flex;
+    justify-content: center; /* Center labels horizontally */
+    gap: 15px; /* Space between labels */
+    margin-top: -35px;
+}
+
+/* Styling for label text and colors */
+.chart-labels p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Circle styling for chart labels */
+.label-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Styling for bar and line charts */
+.bar-chart, .line-chart {
+    height: 250px; /* Height of the charts */
+    background-color: #08358f; /* Placeholder background color */
+    border-radius: 5px;
+}
+
+
+
+
+
+
+
+/* Top Products section container */
+.TopProducts-containers {
+    display: flex;
+    justify-content: space-between; /* Space between Top Products and Best Item */
+    align-items: top; /* Align items at the top */
+    gap: 20px; /* Space between the containers */
+}
+
+/* Styling for the Top Products content box */
+.TopProducts-content {
+    padding: 20px;
+    background-color: #f4f6f8;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    width: 145%;
+    height: 350px;
+    margin-left: 31px;
+}
+
+
+/* Styling for the Best Item section */
+.BestItem {
+        width: 100%;
+        padding: 10px; /* Keep original padding */
+        height: 367px;
+    
+}
+
+.BestItem-header {
+    display: flex;
+        justify-content:space-between;
+        width: 95%;
+        
+}
+
+/* Resetting h4 margin */
+.BestItem h4 {
+    margin: 0; /* Remove default margin */
+}
+
+/* Styling for the "View All" button */
+.ViewAll {
+    padding: 5px 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: x-small;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+    height: 20px;
+
+}
+
+/* Hover effect for the "View All" button */
+.ViewAll:hover {
+    background-color: #4a81bd; /* Darker background on hover */
+    color: white; /* Change text color on hover for contrast */
+}
+
+/* BEST ITEM CONTENT */
+
+.BestItem-content {
+    width: 95%;
+    height: 156px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    background-color: #f4f6f8;
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* TOP PRODUCTS IMAGES */
+
+.TopProducts-image img{
+    width: 90%;
+    height: 240px;
+    padding: 5px;
+    margin-top: 5px;
+    border: 3px solid #dae0e7;
+    border-radius: 5px;
+
+}
+
+.TopProducts-image {
+    display: flex;
+    justify-content: space-between;
+
+
+}
+
+.TopProducts-name {
+    margin-top: 2px;
+    font-weight: bold;
+
+}
+
+.TopProducts-number {
+    margin-top: -13px;
+    font-size: small;
+}
+
+
+
+

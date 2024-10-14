@@ -1,0 +1,125 @@
+.ListCategory-content {
+    left: 21%;
+    position: fixed;
+    padding: 10px;
+    width: 75%;
+    background-color: none;
+    top: 6%;
+    height: 88%;
+}
+
+.ListCategory-header {
+    width: 93%;
+    display: flex;
+    justify-content: space-between; /* Places the button on the right */
+    align-items: center; /* Vertically centers the content */
+}
+
+.header-text {
+    flex: 1; /* Ensures the text takes up available space */
+    font-size: small;
+    color: gray;
+}
+
+/* Table Container */
+.table-responsive {
+    overflow-x: auto; /* Enables horizontal scrolling on small screens */
+}
+
+/* Table Styles */
+.ListCategory-table {
+    width: 100%;
+    border-collapse: collapse; /* Removes space between cells */
+    margin-top: 10px; /* Space above the table */
+}
+
+/* Table Header */
+.ListCategory-table thead {
+    background-color: #f4f4f4; /* Light gray background */
+}
+
+.ListCategory-table th {
+    padding: 12px 15px; /* Padding inside table headers */
+    text-align: center; /* Left aligns header text */
+    font-weight: bold; /* Bold header text */
+    border-bottom: 2px solid #ddd; /* Bottom border */
+    vertical-align: middle; /* Aligns header vertically to the middle */
+}
+
+/* Table Body */
+.ListCategory-table tbody tr {
+    border-bottom: 1px solid #ddd; /* Bottom border for each row */
+}
+
+.ListCategory-table td {
+    padding: 10px 15px; /* Padding inside table cells */
+    vertical-align: middle; /* Center align vertically */
+    text-align: center;
+}
+
+/* Image Cell */
+.image-cell td{
+    display: flex; /* Flexbox for aligning image and text */
+    align-items: center; /* Vertically centers the image and text */
+}
+
+.image-wrapper td{
+    display: flex; /* Flexbox for vertical alignment */
+    flex-direction: row; /* Stack image and text horizontally */
+    align-items: center; /* Center aligns the items */
+    text-align: center; /* Center aligns text */
+    margin-left: 5px; /* Space between image and text */
+}
+
+.category-image {
+    width: 40px; /* Fixed width for images */
+    height: auto; /* Maintains aspect ratio */
+    border-radius: 10px; /* Rounded corners for images */
+    margin-right: 5px; /* Space between image and text */
+}
+
+/* Action Buttons */
+.action-buttons td {
+    display: flex; /* Aligns buttons horizontally */
+    justify-content: flex-start; /* Center aligns buttons */
+    gap: 5px; /* Space between buttons */
+}
+
+.action-buttons button {
+    background-color: #007bff; /* Primary button color */
+    color: white; /* Button text color */
+    border: none; /* Removes border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px 8px; /* Button padding */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+.action-buttons button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Checkbox Styles */
+.ListCategory-table input[type="checkbox"] {
+    transform: scale(0.8); /* Slightly smaller checkboxes */
+    margin: 0; /* Removes default margin */
+    vertical-align: middle; /* Align checkboxes vertically in the middle */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .ListCategory-content {
+        left: 0; /* Reset left positioning on small screens */
+        width: 100%; /* Full width on small screens */
+    }
+
+    .ListCategory-table th,
+    .ListCategory-table td {
+        font-size: 14px; /* Smaller font size */
+        padding: 8px; /* Reduced padding */
+    }
+
+    .category-image {
+        width: 40px; /* Smaller image on mobile */
+    }
+}

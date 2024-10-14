@@ -1,0 +1,179 @@
+.ListProduct-content {
+    left: 21%;
+    position: fixed;
+    padding: 10px;
+    width: 80%;
+    background-color: none;
+    top: 6%;
+    height: 88%;
+}
+
+.ListProduct-header {
+    width: 93%;
+    display: flex;
+    justify-content: space-between; /* Places the button on the right */
+    align-items: center; /* Vertically centers the content */
+}
+
+.header-text {
+    flex: 1; /* Ensures the text takes up available space */
+    font-size: small;
+    color: gray;
+}
+
+.ListProduct-button {
+    padding: 7px 13px;
+    background-color: rgb(34, 226, 226);
+    border-radius: 8px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.show-entries{
+    display: flex;
+    justify-content: space-between;
+    width: 93%;
+}
+.show-entries label, 
+.search-box label {
+    font-size: 14px;
+    color: #333;
+}
+
+.ListProduct-add {
+    background-color: #00bfff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-box input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+.ListProduct-table {
+    width: 93%; /* Set table width to 93% */
+    border-collapse: collapse;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    height: 80px;
+    overflow-y: scroll;
+    
+
+    
+  }
+  
+  .ListProduct-table th, 
+  .ListProduct-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Prevents wrapping of content */
+  }
+  
+  .ListProduct-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    text-align: left; /* Align header text to the left */
+    border-bottom: 2px solid #ddd; /* Thicker border for header row */
+  }
+  
+  .ListProduct-table input[type="checkbox"] {
+    display: block;
+    margin: auto;
+    width: 14px;
+    height: 14px;
+  }
+  
+  .ListProduct-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .ListProduct-table th:first-child,
+  .ListProduct-table td:first-child {
+    text-align: center; /* Center-align checkboxes */
+  }
+  
+  .ListProduct-table td {
+    text-align: left; /* Left-align content */
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+  }
+  
+  .action-buttons button {
+    background-color: transparent;
+    border: none;
+    padding: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .view-btn {
+    color: #00bfa5;
+  }
+  
+  .edit-btn {
+    color: #007bff;
+  }
+  
+  .delete-btn {
+    color: #ff5722;
+  }
+  
+  .action-buttons button:hover {
+    opacity: 0.7;
+  }
+  
+  /* Optional: Set fixed column widths for better structure */
+  .ListProduct-table th:nth-child(2),
+  .ListProduct-table td:nth-child(2) {
+    width: 20%; /* Adjust for Product column */
+  }
+  
+  .ListProduct-table th:nth-child(3),
+  .ListProduct-table td:nth-child(3),
+  .ListProduct-table th:nth-child(4),
+  .ListProduct-table td:nth-child(4) {
+    width: 10%; /* Adjust for Code and Category */
+  }
+  
+  .ListProduct-table th:nth-child(9),
+  .ListProduct-table td:nth-child(9) {
+    width: 69px; /* Adjust for Action column */
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination p {
+    font-size: 14px;
+    color: #333;
+}
+
+.pagination button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.pagination button:hover {
+    background-color: #f0f0f0;
+}
+
+  
