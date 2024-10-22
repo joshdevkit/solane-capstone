@@ -37,8 +37,8 @@
                         <tbody>
                             @forelse ($products as $product)
                                 <tr>
-                                    <td class="py-2 px-4 border-b text-center ">
-                                        <img src="{{ asset($product->product_image) }}" alt="{{ $product->name }}"
+                                    <td class="py-2 px-4 border-b flex justify-center items-center">
+                                        <img src="{{ asset($product->product_image) }}" alt="{{ $product->product_image }}"
                                             class="w-16 h-16 object-cover">
                                     </td>
                                     <td class="py-2 px-4 border-b text-center">{{ $product->name }}</td>
@@ -58,15 +58,37 @@
                                             <x-lucide-edit class="w-5 h-5 inline-block" />
                                         </a>
 
-                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST"
-                                            class="inline-block"
-                                            onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:text-red-700" title="Delete">
-                                                <x-lucide-trash class="w-5 h-5 inline-block" />
-                                            </button>
-                                        </form>
+                                        <!-- Delete Button (Trigger) -->
+                                        <button class="text-red-500 hover:text-red-700" title="Delete"
+                                            onclick="openModal('delete-modal')">
+                                            <x-lucide-trash class="w-5 h-5 inline-block" />
+                                        </button>
+
+                                        <div id="delete-modal"
+                                            class="fixed z-10 inset-0 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                                            <!-- Modal Box -->
+                                            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                                                <h2 class="text-lg font-semibold mb-4">Confirm Deletion</h2>
+                                                <p class="text-gray-600">Are you sure you want to delete this product?</p>
+
+                                                <div class="mt-6 flex justify-end">
+                                                    <button type="button" onclick="closeModal('delete-modal')"
+                                                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded mr-2">
+                                                        Cancel
+                                                    </button>
+
+                                                    <form action="{{ route('products.destroy', $product->id) }}"
+                                                        method="POST" class="inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                                                            Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
 
 
@@ -82,4 +104,13 @@
             </div>
         </div>
     </div>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+    </script>
 @endsection

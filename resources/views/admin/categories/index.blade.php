@@ -19,7 +19,7 @@
                             Add Category
                         </a>
                     </div>
-                    <table class="min-w-full bg-white">
+                    <table class="min-w-full text-center  bg-white">
                         <thead>
                             <tr>
                                 <th class="py-2 px-4 border-b">Image</th>
@@ -31,20 +31,52 @@
                         <tbody>
                             @forelse ($categories as $category)
                                 <tr>
-                                    <td class="py-2 px-4 border-b">
+                                    <td class="py-2 px-4 border-b flex justify-center items-center">
                                         <img src="{{ asset($category->image) }}" alt="{{ $category->name }}"
                                             class="w-16 h-16 object-cover">
                                     </td>
+
                                     <td class="py-2 px-4 border-b">{{ $category->name }}</td>
                                     <td class="py-2 px-4 border-b">{{ $category->code }}</td>
                                     <td class="py-2 px-4 border-b">
-                                        <a href="#" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                        <a href="{{ route('category.edit', $category->id) }}"
+                                            class="text-blue-500 hover:text-blue-700" title="Edit">
                                             <x-lucide-edit class="w-5 h-5 inline" />
                                         </a>
-                                        <a href="#" class="text-red-500 hover:text-red-700 ml-2" title="Delete">
+
+                                        <!-- Trigger the modal with the delete button same with products delete confirmations too -->
+                                        <button type="button" class="text-red-500 hover:text-red-700 ml-2" title="Delete"
+                                            onclick="showDeleteModal({{ $category->id }})">
                                             <x-lucide-trash class="w-5 h-5 inline" />
-                                        </a>
+                                        </button>
+
+                                        <!-- Hidden form to submit on modal confirmation -->
+                                        <form id="delete-form-{{ $category->id }}"
+                                            action="{{ route('category.destroy', $category->id) }}" method="POST"
+                                            class="hidden">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     </td>
+
+                                    <div id="delete-modal"
+                                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                        <div class="bg-white rounded-lg p-6 shadow-lg">
+                                            <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
+                                            <p class="mb-4">Are you sure you want to delete this category? </p>
+                                            <div class="flex justify-end space-x-4">
+                                                <button class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+                                                    onclick="hideDeleteModal()">
+                                                    Cancel
+                                                </button>
+                                                <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                                                    id="confirm-delete-btn">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                 </tr>
                             @empty
@@ -58,4 +90,23 @@
             </div>
         </div>
     </div>
+    <script>
+        let categoryIdToDelete = null;
+
+        function showDeleteModal(categoryId) {
+            categoryIdToDelete = categoryId;
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+
+        function hideDeleteModal() {
+            categoryIdToDelete = null;
+            document.getElementById('delete-modal').classList.add('hidden');
+        }
+
+        document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+            if (categoryIdToDelete) {
+                document.getElementById('delete-form-' + categoryIdToDelete).submit();
+            }
+        });
+    </script>
 @endsection

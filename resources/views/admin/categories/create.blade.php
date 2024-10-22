@@ -11,7 +11,7 @@
                     @if ($errors->any())
                         <div class="mb-4">
                             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
-                                <p class="font-bold">Please fill the following errors:</p>
+                                <p class="font-bold">Please fill the following criteria:</p>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>

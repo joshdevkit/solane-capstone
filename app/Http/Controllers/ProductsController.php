@@ -219,9 +219,15 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Products $products)
+    public function destroy(Products $product)
     {
-        //
+        if ($product->product_image && Storage::disk('public')->exists('images/products/' . $product->product_image)) {
+            Storage::disk('public')->delete('images/products/' . $product->product_image);
+        }
+
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
 
     public function upload(Request $request)

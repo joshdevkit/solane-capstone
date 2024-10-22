@@ -82,27 +82,63 @@ class CategoyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Categories $categoy)
+    public function edit(Categories $category)
     {
-        //
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categories $categoy)
+    public function update(Request $request, Categories $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:100',
+            'image' => 'nullable|image', // Allow image to be nullable during updates
+        ]);
+
+        // Handle image upload if a new image is provided
+        if ($request->hasFile('image')) {
+            // Define the path where the image will be stored
+            $destinationPath = public_path('images/categories');
+
+            // Get the file and its original name
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName(); // Unique filename
+
+            // Move the file to the public folder (images/categories)
+            $file->move($destinationPath, $fileName);
+
+            // Save the relative image path
+            $category->image = 'images/categories/' . $fileName;
+        }
+
+        // Update other category fields
+        $category->update([
+            'name' => $request->name,
+            'code' => $request->code,
+            'image' => $category->image, // Keep the image path in the update if it's set
+        ]);
+
+        return redirect()->route('category.index')->with('success', 'Category updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categories $categoy)
+    public function destroy(Categories $category)
     {
-        //
-    }
+        // Remove the image from storage if exists
+        if ($category->image && Storage::disk('public')->exists($category->image)) {
+            Storage::disk('public')->delete($category->image);
+        }
 
+        // Delete the category
+        $category->delete();
+
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+    }
     public function upload(Request $request)
     {
         $request->validate([

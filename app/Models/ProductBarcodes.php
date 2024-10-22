@@ -9,9 +9,13 @@ class ProductBarcodes extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'product_id',
         'barcode'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Products::class, 'product_id');
+    }
 }

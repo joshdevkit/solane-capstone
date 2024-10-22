@@ -18,7 +18,6 @@
                             'dropdownItems' => [
                                 ['label' => 'List Products', 'route' => 'products.index'],
                                 ['label' => 'Add Product', 'route' => 'products.create'],
-                                // ['label' => 'Product Categories', 'route' => ''],
                             ],
                         ],
                         [
@@ -30,45 +29,26 @@
                                 ['label' => 'Add Category', 'route' => 'category.create'],
                             ],
                         ],
-                        // [
-                        //     'icon' => 'assets/sales.png',
-                        //     'label' => 'Sales',
-                        //     'route' => '',
-                        //     'dropdownItems' => [
-                        //         ['label' => 'List Sales', 'route' => ''],
-                        //         ['label' => 'Add Sale', 'route' => ''],
-                        //         ['label' => 'Sales Reports', 'route' => ''],
-                        //     ],
-                        // ],
-                        // [
-                        //     'icon' => 'assets/people.png',
-                        //     'label' => 'Customers',
-                        //     'route' => '',
-                        //     'dropdownItems' => [
-                        //         ['label' => 'List Customers', 'route' => ''],
-                        //         ['label' => 'Add Customer', 'route' => ''],
-                        //     ],
-                        // ],
-                        // [
-                        //     'icon' => 'assets/people.png',
-                        //     'label' => 'Users',
-                        //     'route' => '',
-                        //     'dropdownItems' => [
-                        //         ['label' => 'List Users', 'route' => ''],
-                        //         ['label' => 'Add User', 'route' => ''],
-                        //         ['label' => 'User Roles', 'route' => ''],
-                        //     ],
-                        // ],
-                        // [
-                        //     'icon' => 'assets/reports.png',
-                        //     'label' => 'Reports',
-                        //     'route' => '',
-                        //     'dropdownItems' => [
-                        //         ['label' => 'Sales Reports', 'route' => ''],
-                        //         ['label' => 'Customer Reports', 'route' => ''],
-                        //         ['label' => 'Product Reports', 'route' => ''],
-                        //     ],
-                        // ],
+                        [
+                            'icon' => 'assets/sales.png',
+                            'label' => 'Sales',
+                            'route' => '',
+                            'dropdownItems' => [
+                                ['label' => 'List Sales', 'route' => 'sales.index'],
+                                ['label' => 'Add Sale', 'route' => 'sales.create'],
+                            ],
+                        ],
+                        [
+                            'icon' => 'assets/people.png',
+                            'label' => 'People',
+                            'route' => '',
+                            'dropdownItems' => [
+                                ['label' => ' • Customers', 'route' => 'customers.index'],
+                                ['label' => ' • Add Customer', 'route' => 'customers.create'],
+                                ['label' => ' • Suppliers', 'route' => 'suppliers.index'],
+                                ['label' => ' • Add Suppliers', 'route' => 'suppliers.create'],
+                            ],
+                        ],
                     ];
                 @endphp
                 @foreach ($sidebarItems as $item)

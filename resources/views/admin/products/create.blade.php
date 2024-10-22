@@ -47,7 +47,6 @@
                                         <div class="relative">
                                             <div id="serial_number_tags"
                                                 class="flex flex-wrap border border-gray-300 rounded-md shadow-sm bg-white p-1">
-                                                <!-- Tags will be appended here -->
                                             </div>
                                             <input type="text" id="serial_number" name="serial_number[]"
                                                 class="mt-1 block w-full border-0 focus:ring-0 bg-transparent text-gray-800"

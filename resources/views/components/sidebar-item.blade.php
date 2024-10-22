@@ -1,5 +1,16 @@
 <li>
     @if (!empty($dropdownItems))
+        @php
+            // Check if the current route matches any of the dropdown item routes
+            $isOpen = false;
+            foreach ($dropdownItems as $item) {
+                if (Route::is($item['route']) || Route::is($item['route'] . '.*')) {
+                    $isOpen = true;
+                    break;
+                }
+            }
+        @endphp
+
         <button type="button"
             class="flex items-center p-2 w-full text-base font-normal text-black rounded-lg transition duration-75 hover:bg-gray-300"
             aria-controls="{{ $label }}" data-collapse-toggle="{{ $label }}">
@@ -11,17 +22,19 @@
                     clip-rule="evenodd"></path>
             </svg>
         </button>
-        <ul id="{{ $label }}" class="hidden py-2 space-y-2">
+        <ul id="{{ $label }}" class="{{ $isOpen ? '' : 'hidden' }} py-2 space-y-2">
             @foreach ($dropdownItems as $item)
                 <li>
                     <a href="{{ route($item['route']) }}"
-                        class="flex items-center p-2 pl-11 w-full text-base font-normal text-black rounded-lg transition duration-75 hover:bg-gray-300">{{ $item['label'] }}</a>
+                        class="flex items-center p-2 pl-11 w-full text-base font-normal text-black rounded-lg transition duration-75 hover:bg-gray-300 {{ Route::is($item['route']) || Route::is($item['route'] . '.*') ? 'bg-gray-300' : '' }}">
+                        {{ $item['label'] }}
+                    </a>
                 </li>
             @endforeach
         </ul>
     @else
         <a href="{{ route($route) }}"
-            class="flex items-center p-2 text-base font-normal text-black rounded-lg hover:bg-gray-300">
+            class="flex items-center p-2 text-base font-normal text-black rounded-lg hover:bg-gray-300 {{ Route::is($route) || Route::is($route . '.*') ? 'bg-gray-300' : '' }}">
             <img src="{{ asset($icon) }}" alt="{{ $label }} logo" class="w-6 h-6">
             <span class="ml-3">{{ $label }}</span>
         </a>
