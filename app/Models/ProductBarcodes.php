@@ -18,4 +18,9 @@ class ProductBarcodes extends Model
     {
         return $this->belongsTo(Products::class, 'product_id');
     }
+
+    public function income()
+    {
+        return $this->hasOne(Income::class, 'serial_id', 'id');
+    }
 }

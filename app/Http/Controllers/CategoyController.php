@@ -34,40 +34,14 @@ class CategoyController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|max:255',
-            'image' => 'required|string',
         ]);
+        $category = new Categories();
+        $category->name = $request->name;
+        $category->code = $request->code;
 
-        // Decode the image data from the request
-        $imageData = json_decode($request->input('image'), true);
-        $tempPath = $imageData['path'] ?? null;
+        $category->save();
 
-        // Check if the temporary path exists
-        if ($tempPath && file_exists(storage_path('app/' . $tempPath))) {
-            // Define the target path for the image in the public directory
-            $targetPath = 'images/categories/' . basename($tempPath);
-            $targetFullPath = public_path($targetPath); // Full path to the target directory
-
-            // Ensure the directory exists
-            if (!file_exists(dirname($targetFullPath))) {
-                mkdir(dirname($targetFullPath), 0755, true);
-            }
-
-            // Move the file to the public directory
-            if (rename(storage_path('app/' . $tempPath), $targetFullPath)) {
-                // Save the category details in the database
-                $category = new Categories();
-                $category->name = $request->name;
-                $category->code = $request->code;
-                $category->image = $targetPath; // Store the relative path in the database
-                $category->save();
-
-                return redirect()->route('category.index')->with('success', 'Category created successfully!');
-            } else {
-                return back()->withErrors(['image' => 'Image upload failed.']);
-            }
-        } else {
-            return back()->withErrors(['image' => 'Temporary image path does not exist.']);
-        }
+        return redirect()->route('category.index')->with('success', 'Category created successfully!');
     }
 
 
@@ -129,15 +103,9 @@ class CategoyController extends Controller
      */
     public function destroy(Categories $category)
     {
-        // Remove the image from storage if exists
-        if ($category->image && Storage::disk('public')->exists($category->image)) {
-            Storage::disk('public')->delete($category->image);
-        }
-
-        // Delete the category
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('category.index')->with('success', 'Category deleted successfully.');
     }
     public function upload(Request $request)
     {

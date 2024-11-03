@@ -38,7 +38,8 @@ class ProductsController extends Controller
         $validatedData = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
-            'barcode_symbology' => 'nullable|string',
+            'barcode_symbology' => 'required|string',
+            'net_weight' => 'required|string',
             'cost' => 'required|numeric',
             'price' => 'required|numeric',
             'image' => 'required|string', // Expecting a string path
@@ -71,6 +72,7 @@ class ProductsController extends Controller
             'category_id' => $validatedData['category_id'],
             'name' => $validatedData['name'],
             'barcode_symbology' => $validatedData['barcode_symbology'],
+            'net_weight' => $validatedData['net_weight'],
             'cost' => $validatedData['cost'],
             'price' => $validatedData['price'],
             'quantity' => $barcodeCount,
@@ -132,6 +134,7 @@ class ProductsController extends Controller
             'serial_number' => 'nullable|array',
             'serial_number.*' => 'nullable|string',
             'barcode_symbology' => 'required|string|max:255',
+            'net_weight' => 'required|string|max:255',
             'cost' => 'required|numeric|min:0',
             'price' => 'required|numeric|min:0',
             'product_description' => 'nullable|string',
@@ -186,6 +189,7 @@ class ProductsController extends Controller
         $product->category_id = $request->category_id;
         $product->name = $request->name;
         $product->barcode_symbology = $request->barcode_symbology;
+        $product->net_weight = $request->net_weight;
         $product->cost = $request->cost;
         $product->price = $request->price;
         $product->quantity = $totalNewOrEdited;

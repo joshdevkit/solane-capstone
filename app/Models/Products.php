@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\LowStockNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,7 @@ class Products extends Model
     protected $fillable = [
         'name',
         'barcode_symbology',
+        'net_weight',
         'category_id',
         'cost',
         'price',
@@ -29,5 +31,13 @@ class Products extends Model
     public function category()
     {
         return $this->belongsTo(Categories::class, 'category_id');
+    }
+
+
+    public function checkStock()
+    {
+        if ($this->quantity < 20) {
+            $this->notify(new LowStockNotification($this));
+        }
     }
 }

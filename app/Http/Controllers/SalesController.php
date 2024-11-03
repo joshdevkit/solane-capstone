@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SalesRequest;
 use App\Models\Customers;
+use App\Models\Income;
 use App\Models\ProductBarcodes;
 use App\Models\Products;
 use App\Models\Sales;
@@ -25,8 +27,10 @@ class SalesController extends Controller
     {
         $serialNumbers = ProductBarcodes::with('product:id,name')
             ->where('product_id', $productId)
+            ->whereDoesntHave('income') // Filter out serials that already exist in incomes
             ->get(['id', 'barcode', 'product_id']);
 
+        // Map serial numbers with product name for the response
         $serialNumbersWithProductName = $serialNumbers->map(function ($serial) {
             return [
                 'id' => $serial->id,
@@ -37,6 +41,7 @@ class SalesController extends Controller
 
         return response()->json($serialNumbersWithProductName);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -54,49 +59,15 @@ class SalesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SalesRequest $request)
     {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'product_id' => 'required|array',
-            'product_id.*' => 'exists:products,id',
-            'date_added' => 'required|date',
-            'reference_no' => 'required|string|max:255',
-            'biller' => 'required|string|max:255',
-            'customer_id' => 'required|exists:customers,id',
-            'order_tax' => 'nullable|string|max:255',
-            'order_discount' => 'nullable|string|max:255',
-            'shipping' => 'nullable|string|max:255',
-            'attached_document' => 'required',
-            'sale_status' => 'required|string|max:255',
-            'payment_status' => 'required|string|max:255',
-            'sales_note' => 'required|string|max:1000',
-        ], [
-            'product_id.required' => 'Please select a product.',
-            'product_id.array' => 'Invalid product selection.',
-            'product_id.*.exists' => 'One or more selected products do not exist.',
-            'date_added.required' => 'Please enter the date.',
-            'date_added.date' => 'The date must be a valid date.',
-            'reference_no.required' => 'Please enter a reference number.',
-            'biller.required' => 'Please enter the biller name.',
-            'customer_id.required' => 'Please select a customer.',
-            'customer_id.exists' => 'The selected customer does not exist.',
-            'attached_document.required' => 'Please attach the required document.',
-            'attached_document.file' => 'The attached document must be a file.',
-            'attached_document.mimes' => 'The attached document must be a file of type: pdf, jpg, jpeg, png.',
-            'attached_document.max' => 'The attached document must not be greater than 2MB.',
-            'sale_status.required' => 'Please select a sale status.',
-            'payment_status.required' => 'Please select a payment status.',
-            'sales_note.required' => 'Please enter sales notes.',
-        ]);
+        $validatedData = $request->validated();
 
         $filename = time() . '_' . $request->file('attached_document')->getClientOriginalName();
         $documentPath = public_path('documents');
-
         if (!file_exists($documentPath)) {
             mkdir($documentPath, 0755, true);
         }
-
         $request->file('attached_document')->move($documentPath, $filename);
 
         $sales = Sales::create([
@@ -116,12 +87,23 @@ class SalesController extends Controller
         foreach ($validatedData['product_id'] as $productId) {
             $serialKey = "product_serial_id_$productId";
             if ($request->has($serialKey)) {
-                $productSerialIds = $request->input($serialKey);
-                foreach ($productSerialIds as $serialId) {
+                $product = Products::find($productId);
+                $discount = ($validatedData['order_discount'] === 'pwd' || $validatedData['order_discount'] === 'senior') ? 0.95 : 1;
+
+                foreach ($request->input($serialKey) as $serialId) {
+                    $amount = $product->price * $discount;
+
                     SalesItems::create([
                         'sales_id' => $sales->id,
                         'product_id' => $productId,
                         'product_serial_id' => $serialId,
+                    ]);
+
+                    Income::create([
+                        'product_id' => $productId,
+                        'serial_id' => $serialId,
+                        'amount' => $amount,
+                        'income_date' => $sales->date_added
                     ]);
                 }
             }

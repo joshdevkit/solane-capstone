@@ -83,12 +83,22 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label for="barcode_symbology" class="block text-sm font-medium text-gray-700">Barcode
-                                        Symbology</label>
-                                    <input type="text" id="barcode_symbology" name="barcode_symbology"
-                                        value="{{ $products->barcode_symbology }}"
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="barcode_symbology"
+                                            class="block text-sm font-medium text-gray-700">Barcode
+                                            Symbology</label>
+                                        <input type="text" id="barcode_symbology" name="barcode_symbology"
+                                            value="{{ $products->barcode_symbology }}"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    </div>
+                                    <div>
+                                        <label for="net_weight" class="block text-sm font-medium text-gray-700">Net
+                                            Weight</label>
+                                        <input type="text" id="net_weight" name="net_weight"
+                                            value="{{ $products->net_weight }}"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    </div>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
@@ -123,7 +133,8 @@
                                 </div>
 
                                 <div>
-                                    <label for="product_description" class="block text-sm font-medium text-gray-700">Product
+                                    <label for="product_description"
+                                        class="block text-sm font-medium text-gray-700">Product
                                         Description</label>
                                     <textarea id="product_description" name="product_description" rows="3"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ $products->product_description }}</textarea>
@@ -132,7 +143,8 @@
                         </div>
 
                         <div class="mt-6">
-                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update Product</button>
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update
+                                Product</button>
                         </div>
                     </form>
                 </div>

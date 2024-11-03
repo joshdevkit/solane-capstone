@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('barcode_symbology');
+            $table->string('net_weight');
             $table->unsignedBigInteger('category_id');
             $table->decimal('cost')->default(8, 2);
             $table->decimal('price')->default(8, 2);

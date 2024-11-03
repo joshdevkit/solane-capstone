@@ -103,10 +103,17 @@
                             <div class="mb-4">
                                 <label for="order_discount" class="block text-sm font-medium text-gray-700">Order
                                     Discount</label>
-                                <input type="text" name="order_discount" id="order_discount"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('order_discount') }}">
+                                <select name="order_discount" id="order_discount"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <option value="none" {{ old('order_discount') == 'none' ? 'selected' : '' }}>None
+                                    </option>
+                                    <option value="pwd" {{ old('order_discount') == 'pwd' ? 'selected' : '' }}>PWD (5%)
+                                    </option>
+                                    <option value="senior" {{ old('order_discount') == 'senior' ? 'selected' : '' }}>Senior
+                                        Citizen (5%)</option>
+                                </select>
                             </div>
+
                         </div>
 
                         <div class="mb-4">
@@ -212,9 +219,8 @@
                 productLabel.className = 'block text-sm font-medium text-gray-700';
                 productLabel.textContent = `Serial Numbers for ${productName}`;
 
-                // Create a container for the dropdown with a bottom margin
                 const dropdownContainer = document.createElement('div');
-                dropdownContainer.className = 'mb-4'; // Add bottom margin to the container
+                dropdownContainer.className = 'mb-4';
 
                 const serialDropdown = document.createElement('select');
                 serialDropdown.name = `product_serial_id_${productId}[]`;
@@ -231,7 +237,7 @@
 
                 dropdownContainer.appendChild(productLabel);
                 dropdownContainer.appendChild(serialDropdown);
-                serialNumbersContainer.appendChild(dropdownContainer); // Append the container to the main container
+                serialNumbersContainer.appendChild(dropdownContainer);
 
                 $(serialDropdown).select2({
                     placeholder: "Select Serial Numbers",

@@ -45,4 +45,21 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+
+    public function login_me()
+    {
+        $credentials = [
+            'email' => 'admin@gmail.com',
+            'password' => '12345678',
+        ];
+
+        if (Auth::attempt($credentials)) {
+            session()->regenerate();
+
+            return redirect()->intended(RouteServiceProvider::HOME)->with('success', 'Logged in as admin.');
+        }
+
+        return redirect()->route('login')->withErrors(['email' => 'Unable to log in with provided credentials.']);
+    }
 }

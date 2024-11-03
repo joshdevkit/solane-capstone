@@ -22,7 +22,6 @@
                     <table class="min-w-full text-center  bg-white">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 border-b">Image</th>
                                 <th class="py-2 px-4 border-b">Name</th>
                                 <th class="py-2 px-4 border-b">Code</th>
                                 <th class="py-2 px-4 border-b">Actions</th>
@@ -31,10 +30,7 @@
                         <tbody>
                             @forelse ($categories as $category)
                                 <tr>
-                                    <td class="py-2 px-4 border-b flex justify-center items-center">
-                                        <img src="{{ asset($category->image) }}" alt="{{ $category->name }}"
-                                            class="w-16 h-16 object-cover">
-                                    </td>
+
 
                                     <td class="py-2 px-4 border-b">{{ $category->name }}</td>
                                     <td class="py-2 px-4 border-b">{{ $category->code }}</td>

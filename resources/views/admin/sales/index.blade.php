@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="py-12 lg:ml-64 mx-auto max-w-full mt-16">
-        <div class="w-full mx-auto sm:px-6 lg:px-8">
+        <div class="w-full overflow-x-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if (session('success'))
@@ -13,7 +13,7 @@
                         </div>
                     @endif
                     <h1 class="text-xl font-bold mb-4">Sales List</h1>
-                    <table class="min-w-full divide-y">
+                    <table class="min-w-full divide-y table-auto">
                         <thead>
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
@@ -40,16 +40,35 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ date('F d, Y', strtotime($sale->date_added)) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $sale->customer->name ?? 'N/A' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ $sale->items->sum(function ($item) {
-                                            return $item->product->price ?? 0;
-                                        }) }}
+                                    <td class="px-6 py-4 whitespace-nowrap relative">
+                                        @php
+                                            $totalPrice = $sale->items->sum(function ($item) {
+                                                return $item->product->price ?? 0;
+                                            });
+                                        @endphp
+
+                                        @if ($sale->order_discount === 'pwd' || $sale->order_discount === 'senior')
+                                            <span
+                                                class="absolute top-0 right-0 bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded">{{ ucfirst($sale->order_discount) }}</span>
+                                            <span class="line-through text-gray-400">
+                                                {{ number_format($totalPrice, 2) }}
+                                            </span>
+                                            <span class="font-semibold">
+                                                {{ number_format($totalPrice * 0.95, 2) }}
+                                            </span>
+                                        @else
+                                            <span class="font-semibold">
+                                                {{ number_format($totalPrice, 2) }}
+                                            </span>
+                                        @endif
                                     </td>
+
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($sale->sale_status == 'completed' && $sale->payment_status == 'paid')
                                             {{ number_format(
-                                                $sale->items->sum(function ($item) {
-                                                    return $item->product->price ?? 0;
+                                                $sale->items->sum(function ($item) use ($sale) {
+                                                    $price = $item->product->price ?? 0;
+                                                    return $sale->order_discount === 'pwd' || $sale->order_discount === 'senior' ? $price * 0.95 : $price;
                                                 }),
                                                 2,
                                             ) }}
@@ -57,6 +76,7 @@
                                             0.00
                                         @endif
                                     </td>
+
 
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($sale->sale_status == 'completed')

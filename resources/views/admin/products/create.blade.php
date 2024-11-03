@@ -58,15 +58,27 @@
                                     </div>
 
                                 </div>
-
-                                <div>
-                                    <label for="barcode_symbology" class="block text-sm font-medium text-gray-700">Barcode
-                                        Symbology</label>
-                                    <input type="text" id="barcode_symbology" name="barcode_symbology"
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    @error('barcode_symbology')
-                                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                                    @enderror
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="barcode_symbology"
+                                            class="block text-sm font-medium text-gray-700">Barcode
+                                            Symbology</label>
+                                        <input type="text" id="barcode_symbology" name="barcode_symbology"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        @error('barcode_symbology')
+                                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        <label for="barcode_symbology" class="block text-sm font-medium text-gray-700">Net
+                                            Weight
+                                        </label>
+                                        <input type="text" id="net_weight" name="net_weight"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        @error('net_weight')
+                                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">

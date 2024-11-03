@@ -34,10 +34,10 @@
                                 class="mt-1 block w-full border-gray-300 rounded-md">
                         </div>
 
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <label for="image" class="block text-gray-700">Image</label>
                             <input type="file" name="image" id="image" class="filepond mt-1" accept="image/*">
-                        </div>
+                        </div> --}}
 
                         <button type="submit"
                             class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
