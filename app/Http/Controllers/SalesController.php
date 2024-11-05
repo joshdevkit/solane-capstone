@@ -27,10 +27,9 @@ class SalesController extends Controller
     {
         $serialNumbers = ProductBarcodes::with('product:id,name')
             ->where('product_id', $productId)
-            ->whereDoesntHave('income') // Filter out serials that already exist in incomes
+            ->whereDoesntHave('income')
             ->get(['id', 'barcode', 'product_id']);
 
-        // Map serial numbers with product name for the response
         $serialNumbersWithProductName = $serialNumbers->map(function ($serial) {
             return [
                 'id' => $serial->id,

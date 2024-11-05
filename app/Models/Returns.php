@@ -5,25 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Purchase extends Model
+class Returns extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'date_added',
-        'purchase_no',
-        'supplier_id',
-        'is_received',
+        'reference_no',
+        'biller',
+        'customer_id',
         'order_tax',
         'discount',
         'shipping',
-        'payment',
-        'notes'
+        'attach_document',
+        'return_notes'
     ];
 
 
-    public function supplier()
+    public function customer()
     {
-        return $this->belongsTo(Suppliers::class, 'supplier_id');
+        return $this->belongsTo(Customers::class, 'customer_id');
     }
 }

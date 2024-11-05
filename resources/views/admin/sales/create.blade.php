@@ -184,20 +184,33 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const serialNumbersContainer = document.getElementById('serial_numbers_container');
+
             $('#product_id').select2({
                 placeholder: "Select Products",
                 allowClear: true,
                 width: '100%'
             }).on('change', function(e) {
                 const selectedProductIds = $(this).val();
-                const serialNumbersContainer = document.getElementById('serial_numbers_container');
+                updateSerialNumberDropdowns(selectedProductIds);
+            });
 
-                serialNumbersContainer.innerHTML = '';
+            function updateSerialNumberDropdowns(selectedProductIds) {
+                const existingDropdowns = Array.from(serialNumbersContainer.children);
+
+                existingDropdowns.forEach(dropdownContainer => {
+                    const productId = dropdownContainer.dataset.productId;
+                    if (!selectedProductIds.includes(productId)) {
+                        dropdownContainer.remove();
+                    }
+                });
 
                 selectedProductIds.forEach(productId => {
-                    fetchSerialNumbersForProduct(productId);
+                    if (!existingDropdowns.some(dropdown => dropdown.dataset.productId === productId)) {
+                        fetchSerialNumbersForProduct(productId);
+                    }
                 });
-            });
+            }
 
             function fetchSerialNumbersForProduct(productId) {
                 fetch(`/get-serial-numbers/${productId}`)
@@ -205,22 +218,23 @@
                     .then(data => {
                         if (data.length > 0) {
                             addSerialNumberDropdown(productId, data);
+                        } else {
+                            addNoSerialMessageDropdown(productId);
                         }
                     })
                     .catch(error => console.error('Error fetching serial numbers:', error));
             }
 
             function addSerialNumberDropdown(productId, serials) {
-                const serialNumbersContainer = document.getElementById('serial_numbers_container');
+                const dropdownContainer = document.createElement('div');
+                dropdownContainer.className = 'mb-4';
+                dropdownContainer.dataset.productId = productId;
 
                 const productName = serials[0].product_name;
 
                 const productLabel = document.createElement('label');
                 productLabel.className = 'block text-sm font-medium text-gray-700';
                 productLabel.textContent = `Serial Numbers for ${productName}`;
-
-                const dropdownContainer = document.createElement('div');
-                dropdownContainer.className = 'mb-4';
 
                 const serialDropdown = document.createElement('select');
                 serialDropdown.name = `product_serial_id_${productId}[]`;
@@ -241,6 +255,38 @@
 
                 $(serialDropdown).select2({
                     placeholder: "Select Serial Numbers",
+                    allowClear: true,
+                    width: '100%'
+                });
+            }
+
+            function addNoSerialMessageDropdown(productId) {
+                const dropdownContainer = document.createElement('div');
+                dropdownContainer.className = 'mb-4';
+                dropdownContainer.dataset.productId = productId;
+
+                const productLabel = document.createElement('label');
+                productLabel.className = 'block text-sm font-medium text-gray-700';
+                productLabel.textContent =
+                    `Serial Numbers for Product ID ${productId}`;
+
+                const serialDropdown = document.createElement('select');
+                serialDropdown.name = `product_serial_id_${productId}[]`;
+                serialDropdown.className =
+                    'serial-select2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200';
+                serialDropdown.disabled = true;
+
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No Available Stock';
+                serialDropdown.appendChild(option);
+
+                dropdownContainer.appendChild(productLabel);
+                dropdownContainer.appendChild(serialDropdown);
+                serialNumbersContainer.appendChild(dropdownContainer);
+
+                $(serialDropdown).select2({
+                    placeholder: "No Available Stock",
                     allowClear: true,
                     width: '100%'
                 });

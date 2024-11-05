@@ -8,6 +8,7 @@ use App\Http\Controllers\FormsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReturnsController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SuppliersController;
@@ -37,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('purchase', PurchaseController::class);
     Route::resource('uploaded-forms', FormsController::class);
-
+    Route::resource('returns', ReturnsController::class);
 
     Route::patch('/notifications/{id}/read', [StockController::class, 'markAsRead']);
 

@@ -88,9 +88,16 @@
                         </div>
                         <div class="mb-4">
                             <label for="payment" class="block text-sm font-medium text-gray-700">Payment</label>
-                            <input type="text" name="payment" id="payment"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                value="{{ old('payment') }}">
+                            <select name="payment" id="payment"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                <option value="">Select</option>
+                                <option value="Paid">
+                                    Paid
+                                </option>
+                                <option value="Pending">
+                                    Pending
+                                </option>
+                            </select>
                         </div>
 
                         <div class="mb-4">

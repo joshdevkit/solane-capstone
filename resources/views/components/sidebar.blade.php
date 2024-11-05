@@ -49,6 +49,15 @@
                                 ],
                             ],
                             [
+                                'icon' => 'assets/sales.png',
+                                'label' => 'Returns',
+                                'route' => '',
+                                'dropdownItems' => [
+                                    ['label' => 'List Returns', 'route' => 'returns.index'],
+                                    ['label' => 'Add Returns', 'route' => 'returns.create'],
+                                ],
+                            ],
+                            [
                                 'icon' => 'assets/people.png',
                                 'label' => 'People',
                                 'route' => '',

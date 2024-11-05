@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::create('returns', function (Blueprint $table) {
             $table->id();
             $table->date('date_added');
-            $table->string('purchase_no');
-            $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_received');
-            $table->decimal('order_tax', 8, 2);
-            $table->decimal('discount', 8, 2);
+            $table->string('reference_no');
+            $table->string('biller');
+            $table->unsignedBigInteger('customer_id');
+            $table->decimal('order_tax', 11, 2)->default(0);
+            $table->decimal('discount', 11, 2)->default(0);
             $table->string('shipping');
-            $table->enum('payment', ['Pending', 'Paid']);
-            $table->text('notes')->nullable();
+            $table->string('attach_document');
+            $table->string('return_notes')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('returns');
     }
 };
