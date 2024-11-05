@@ -42,17 +42,15 @@ class PurchaseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Purchase $purchase)
-    {
-        //
-    }
+    public function show(Purchase $purchase) {}
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Purchase $purchase)
     {
-        //
+        $supplier = Suppliers::all();
+        return view('admin.purchase.edit', compact('purchase', 'supplier'));
     }
 
     /**
@@ -60,7 +58,31 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, Purchase $purchase)
     {
-        //
+        $validatedData = $request->validate([
+            'date_added' => 'required|date',
+            'purchase_no' => 'required|string|max:255',
+            'supplier_id' => 'required|exists:suppliers,id',
+            'is_received' => 'required|boolean',
+            'order_tax' => 'nullable|string',
+            'discount' => 'nullable|string',
+            'shipping' => 'nullable|string',
+            'payment' => 'required|string|in:Paid,Pending',
+            'notes' => 'nullable|string|max:1000',
+        ]);
+
+        $purchase->update([
+            'date_added' => $validatedData['date_added'],
+            'purchase_no' => $validatedData['purchase_no'],
+            'supplier_id' => $validatedData['supplier_id'],
+            'is_received' => $validatedData['is_received'],
+            'order_tax' => $validatedData['order_tax'],
+            'discount' => $validatedData['discount'],
+            'shipping' => $validatedData['shipping'],
+            'payment' => $validatedData['payment'],
+            'notes' => $validatedData['notes'],
+        ]);
+
+        return redirect()->route('purchase.index')->with('success', 'Purchase updated successfully.');
     }
 
     /**
@@ -68,6 +90,8 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
-        //
+        $purchase->delete();
+
+        return redirect()->route('purchase.index')->with('success', 'Purchase Record deleted successfully.');
     }
 }
