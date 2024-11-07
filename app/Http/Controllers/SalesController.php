@@ -99,6 +99,7 @@ class SalesController extends Controller
                     ]);
 
                     Income::create([
+                        'sales_id' => $sales->id,
                         'product_id' => $productId,
                         'serial_id' => $serialId,
                         'amount' => $amount,
@@ -168,5 +169,19 @@ class SalesController extends Controller
         $sales = Sales::findOrFail($id);
         $sales->delete();
         return redirect()->route('sales.index')->with('success', 'Sale deleted successfully.');
+    }
+
+
+
+
+    /**
+     * pull out method from sales to dapat
+     */
+
+    public function pullout()
+    {
+        $pullout = Income::with(['product', 'productBarcode', 'sales.customer'])->get();
+
+        return view('admin.purchase.pullout', compact('pullout'));
     }
 }

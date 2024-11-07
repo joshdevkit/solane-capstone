@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/category/upload', [CategoyController::class, 'upload'])->name('category.upload');
     Route::post('/product/upload', [CategoyController::class, 'upload'])->name('product.upload');
     Route::get('/get-serial-numbers/{productId}', [SalesController::class, 'getSerialNumbers']);
+
+    Route::get('pull-out', [SalesController::class, 'pullout'])->name('pullout');
 });
 
 

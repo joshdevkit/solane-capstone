@@ -12,6 +12,7 @@
                             <p class="font-bold">{{ session('success') }}</p>
                         </div>
                     @endif
+                    <x-search-with-icon title="Purchase Records" placeholder="Search for items..." onkeyup="filterTable()" />
                     <div class="flex justify-between items-center mb-4">
                         <h1 class="text-xl font-bold">Purchase List</h1>
                         <a href="{{ route('purchase.create') }}"
@@ -34,7 +35,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                             @forelse ($purchases as $purchase)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">

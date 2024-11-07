@@ -55,6 +55,7 @@
                                 'dropdownItems' => [
                                     ['label' => 'List Returns', 'route' => 'returns.index'],
                                     ['label' => 'Add Returns', 'route' => 'returns.create'],
+                                    ['label' => 'Pull Out Records', 'route' => 'pullout'],
                                 ],
                             ],
                             [

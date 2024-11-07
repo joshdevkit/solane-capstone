@@ -7,6 +7,7 @@
         <div class="w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <x-search-with-icon title="Purchase Records" placeholder="Search for items..." onkeyup="filterTable()" />
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-10" role="alert">
                             <p class="font-bold">{{ session('success') }}</p>
@@ -31,7 +32,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                             @forelse ($returns as $return)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">

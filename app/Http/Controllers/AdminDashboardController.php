@@ -8,12 +8,27 @@ use App\Models\Income;
 use App\Models\ProductBarcodes;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
 
     public function index(SampleProductChart $productChart, SampleComparisonChart $comparisonChart)
     {
+
+        $topProducts = Income::with('product')
+            ->select('incomes.product_id', DB::raw('COUNT(incomes.product_id) as total_items_sold'))
+            ->groupBy('incomes.product_id')
+            ->orderByDesc('total_items_sold')
+            ->limit(3)
+            ->get();
+
+        $bestItems = Income::with('product')
+            ->select('product_id', DB::raw('SUM(amount) as total_items_sold'))
+            ->groupBy('product_id')
+            ->orderByDesc('total_items_sold')
+            ->limit(3)
+            ->get();
 
         $totalSales = Income::sum('amount');
         $totalCost = ProductBarcodes::with('product')
@@ -37,7 +52,9 @@ class AdminDashboardController extends Controller
             'selectedComparisonMonth' => $selectedComparisonMonth,
             'totalSales' => $totalSales,
             'totalCost' => $totalCost,
-            'totalProductSold' => $totalProductSold
+            'totalProductSold' => $totalProductSold,
+            'topProducts' => $topProducts,
+            'bestItems' => $bestItems
         ]);
     }
 

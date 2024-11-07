@@ -13,6 +13,7 @@
                         </div>
                     @endif
                     <h1 class="text-xl font-bold mb-4">Sales List</h1>
+                    <x-search-with-icon title="Sales Records" placeholder="Search for items..." onkeyup="filterTable()" />
                     <table class="min-w-full divide-y table-auto">
                         <thead>
                             <tr>
@@ -34,7 +35,7 @@
                                     Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
                             @forelse ($sales as $sale)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
