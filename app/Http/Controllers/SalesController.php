@@ -184,4 +184,19 @@ class SalesController extends Controller
 
         return view('admin.purchase.pullout', compact('pullout'));
     }
+
+
+    public function updateTareWeight($id, Request $request)
+    {
+        $request->validate([
+            'tare_weight' => 'required|string|min:0',
+        ]);
+
+        $income = Income::findOrFail($id);
+
+        $income->tare_weight = $request->tare_weight;
+        $income->save();
+
+        return response()->json(['success' => true]);
+    }
 }

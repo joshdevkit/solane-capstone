@@ -25,6 +25,7 @@
                     <table class="min-w-full bg-white border-2 border-gray-100">
                         <thead>
                             <tr>
+
                                 <th
                                     class="px-6 py-6 text-xs bg-gray-100 font-medium uppercase tracking-wider border-2 border-gray-200 text-center">
                                     Serial Number</th>
@@ -48,6 +49,7 @@
                         <tbody id="tableBody">
                             @forelse ($pullout as $record)
                                 <tr>
+
                                     <td class="px-6 py-4 whitespace-nowrap border-2 border-gray-200 text-center">
                                         #{{ $record->productBarcode ? $record->productBarcode->barcode : 'N/A' }}
                                     </td>
@@ -58,10 +60,34 @@
                                         {{ $record->product ? $record->product->net_weight : 'N/A' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap border-2 border-gray-200 text-center">
-                                        {{ $record->product ? $record->product->tare_weight : 'N/A' }}
+                                        <div class="flex items-center justify-center space-x-2">
+                                            @if ($record->tare_weight)
+                                                {{ $record->tare_weight }}
+                                            @else
+                                                <input type="number" step="0.01" min="0"
+                                                    id="tare_weight_{{ $record->id }}"
+                                                    value="{{ $record->product->tare_weight }}"
+                                                    class="w-34 text-center border-none bg-transparent focus:ring-2 border-2 border-gray-200" />
+                                                <button class="bg-blue-500 text-white px-4 py-2 rounded"
+                                                    onclick="saveTareWeight({{ $record->id }})">
+                                                    <x-lucide-save class="w-5 h-5" />
+                                                </button>
+                                            @endif
+                                        </div>
                                     </td>
+
                                     <td class="px-6 py-4 whitespace-nowrap border-2 border-gray-200 text-center">
+                                        @if ($record->tare_weight)
+                                            @php
+                                                $netWeight = $record->product ? $record->product->net_weight : 0;
+                                                $tareWeight = $record->tare_weight ?? 0;
+                                                $totalResidual = $netWeight - $tareWeight;
+                                            @endphp
+                                            {{ number_format($totalResidual, 2) }}
+                                        @endif
                                     </td>
+
+
                                     <td class="px-6 py-4 whitespace-nowrap border-2 border-gray-200 text-center">
                                         {{ $record->sales->reference_no }}
                                     </td>
@@ -72,24 +98,43 @@
                                 </tr>
                             @endforelse
                         </tbody>
+
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-
     <script>
-        function filterTable() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toLowerCase();
-            const rows = document.getElementById("tableBody").getElementsByTagName("tr");
+        function saveTareWeight(id) {
+            var tareWeight = document.getElementById('tare_weight_' + id).value;
 
-            for (let i = 0; i < rows.length; i++) {
-                let row = rows[i];
-                let textContent = row.textContent.toLowerCase();
-                row.style.display = textContent.includes(filter) ? "" : "none";
+            if (isNaN(tareWeight) || tareWeight === "") {
+                alert("Please enter a valid tare weight.");
+                return;
             }
+
+            fetch("{{ route('update-tareweight', ':id') }}".replace(':id', id), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tare_weight: tareWeight
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    location.reload()
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("There was an error updating tare weight.");
+                });
         }
     </script>
+
+
 @endsection

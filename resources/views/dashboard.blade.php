@@ -104,7 +104,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-4 mt-10">
+        <div class="grid grid-cols-4 gap-4 mt-10 px-3">
             <div class="col-span-3">
                 <div class="bg-white p-4 rounded-lg shadow-md mb-6">
                     <div class="border-2 rounded-lg mb-2 border-gray-200 py-3 px-3">

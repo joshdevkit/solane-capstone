@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-serial-numbers/{productId}', [SalesController::class, 'getSerialNumbers']);
 
     Route::get('pull-out', [SalesController::class, 'pullout'])->name('pullout');
+    Route::post('update-tare-weight/{id}', [SalesController::class, 'updateTareWeight'])->name('update-tareweight');
 });
 
 
