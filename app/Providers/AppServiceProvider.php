@@ -36,11 +36,13 @@ class AppServiceProvider extends ServiceProvider
 
             if ($lowStockProducts->isNotEmpty()) {
                 $users = User::all();
+
                 foreach ($lowStockProducts as $product) {
                     foreach ($users as $user) {
                         $user->notify(new LowStockNotification($product));
                     }
                 }
+
                 Cache::put('last_low_stock_notification_time', now());
             }
         }
