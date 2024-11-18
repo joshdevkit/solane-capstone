@@ -58,30 +58,30 @@
                                         </a>
 
                                         <!-- Delete Button (Trigger) -->
-                                        <button class="text-red-500 hover:text-red-700" title="Delete"
-                                            onclick="openModal('delete-modal')">
-                                            <x-lucide-trash class="w-5 h-5 inline-block" />
+                                        <button type="button" class="text-red-500 hover:text-red-700 ml-2" title="Delete"
+                                            onclick="showDeleteModal({{ $product->id }})">
+                                            <x-lucide-trash class="w-5 h-5 inline" />
                                         </button>
 
                                         <div id="delete-modal"
-                                            class="fixed z-10 inset-0 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
-                                            <!-- Modal Box -->
-                                            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-                                                <h2 class="text-lg font-semibold mb-4">Confirm Deletion</h2>
-                                                <p class="text-gray-600">Are you sure you want to delete this product?</p>
-
-                                                <div class="mt-6 flex justify-end">
-                                                    <button type="button" onclick="closeModal('delete-modal')"
-                                                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded mr-2">
+                                            class="z-10 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                            <div class="bg-white rounded-lg p-6 shadow-lg">
+                                                <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
+                                                <p class="mb-4">Are you sure you want to delete this Product?</p>
+                                                <div class="flex justify-end space-x-4">
+                                                    <button
+                                                        class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+                                                        onclick="hideDeleteModal()">
                                                         Cancel
                                                     </button>
-
-                                                    <form action="{{ route('products.destroy', $product->id) }}"
-                                                        method="POST" class="inline-block">
+                                                    <form id="delete-form-{{ $product->id }}"
+                                                        action="{{ route('products.destroy', $product->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit"
-                                                            class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                                                        <button type="button"
+                                                            class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                                                            onclick="confirmDelete()">
                                                             Delete
                                                         </button>
                                                     </form>
@@ -104,12 +104,23 @@
         </div>
     </div>
     <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
+        let productToDelete = null;
+
+        function showDeleteModal(salesID) {
+            productToDelete = salesID;
+            document.getElementById('delete-modal').classList.remove('hidden');
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
+        function hideDeleteModal() {
+            productToDelete = null;
+            document.getElementById('delete-modal').classList.add('hidden');
+        }
+
+        function confirmDelete() {
+            const form = document.querySelector(`#delete-form-${productToDelete}`);
+            if (form) {
+                form.submit();
+            }
         }
     </script>
 @endsection

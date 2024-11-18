@@ -11,7 +11,8 @@
                     <div class="border-b mb-4 pb-2">
                         <h2 class="text-lg font-semibold">Customer Information</h2>
                         <p class="text-gray-700"><strong>Name:</strong> {{ $sales->customer->name }}</p>
-                        <p class="text-gray-700"><strong>Date Added:</strong> {{ $sales->date_added }}</p>
+                        <p class="text-gray-700"><strong>Date Added:</strong>
+                            {{ date('F d, Y h:i A', strtotime($sales->created_at)) }}</p>
                         <p class="text-gray-700"><strong>Reference No:</strong> {{ $sales->reference_no }}</p>
                         <p class="text-gray-700"><strong>Sale Status:</strong> {{ $sales->sale_status }}</p>
                         <p class="text-gray-700">

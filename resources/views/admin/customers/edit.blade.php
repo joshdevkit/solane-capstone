@@ -46,105 +46,33 @@
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             </div>
 
-                            <div class="col-span-1">
-                                <label class="block text-sm font-medium text-gray-700">Country</label>
-                                <input type="text" name="country" value="{{ old('country', $customer->country) }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            </div>
+                            <div class="mb-4">
+                                <label for="customer_group" class="block text-sm font-medium text-gray-700">Customer
+                                    Group</label>
+                                <select name="customer_group" id="customer_group"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <option value="">Select Customer Group</option>
 
+                                    <option value="COMMERCIAL"
+                                        {{ old('customer_group', $customer->customer_group) == 'COMMERCIAL' ? 'selected' : '' }}>
+                                        COMMERCIAL</option>
+                                    <option value="PRIVATE"
+                                        {{ old('customer_group', $customer->customer_group) == 'PRIVATE' ? 'selected' : '' }}>
+                                        PRIVATE</option>
+                                </select>
+                            </div>
                             <div class="col-span-1 md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700">Address</label>
                                 <input type="text" name="address" value="{{ old('address', $customer->address) }}"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             </div>
 
-                            <div class="col-span-1">
-                                <label class="block text-sm font-medium text-gray-700">City</label>
-                                <input type="text" name="city" value="{{ old('city', $customer->city) }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            </div>
 
-                            <div class="col-span-1">
-                                <label class="block text-sm font-medium text-gray-700">State</label>
-                                <input type="text" name="state" value="{{ old('state', $customer->state) }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            </div>
+
+
 
                         </div>
-                        <div class="mb-4 mt-5">
-                            <label for="customer_group" class="block text-sm font-medium text-gray-700">Customer
-                                Group</label>
-                            <select name="customer_group" id="customer_group"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                                <option value="">Select Customer Group</option>
-                                <option value="KUSINA CO."
-                                    {{ old('customer_group', $customer->customer_group) == 'KUSINA CO.' ? 'selected' : '' }}>
-                                    KUSINA CO.</option>
-                                <option value="BITES TOGO INC."
-                                    {{ old('customer_group', $customer->customer_group) == 'BITES TOGO INC.' ? 'selected' : '' }}>
-                                    BITES TOGO INC.</option>
-                                <option value="LOURDES BIBINGKA"
-                                    {{ old('customer_group', $customer->customer_group) == 'LOURDES BIBINGKA' ? 'selected' : '' }}>
-                                    LOURDES BIBINGKA</option>
-                                <option value="XENTROMALL SANTIAGO"
-                                    {{ old('customer_group', $customer->customer_group) == 'XENTROMALL SANTIAGO' ? 'selected' : '' }}>
-                                    XENTROMALL SANTIAGO</option>
-                                <option value="NORTHSTAR ISABELA"
-                                    {{ old('customer_group', $customer->customer_group) == 'NORTHSTAR ISABELA' ? 'selected' : '' }}>
-                                    NORTHSTAR ISABELA</option>
-                                <option value="RS CANTEEN"
-                                    {{ old('customer_group', $customer->customer_group) == 'RS CANTEEN' ? 'selected' : '' }}>
-                                    RS CANTEEN</option>
-                                <option value="EASTGATE BUSINESS CENTER"
-                                    {{ old('customer_group', $customer->customer_group) == 'EASTGATE BUSINESS CENTER' ? 'selected' : '' }}>
-                                    EASTGATE BUSINESS CENTER</option>
-                                <option value="LZV FOOD SERVICES"
-                                    {{ old('customer_group', $customer->customer_group) == 'LZV FOOD SERVICES' ? 'selected' : '' }}>
-                                    LZV FOOD SERVICES</option>
-                                <option value="SAMGYUPSALBBQBARN"
-                                    {{ old('customer_group', $customer->customer_group) == 'SAMGYUPSALBBQBARN' ? 'selected' : '' }}>
-                                    SAMGYUPSALBBQBARN</option>
-                                <option value="AMRC HOLDINGS CO. INC."
-                                    {{ old('customer_group', $customer->customer_group) == 'AMRC HOLDINGS CO. INC.' ? 'selected' : '' }}>
-                                    AMRC HOLDINGS CO. INC.</option>
-                                <option value="COCINA DE ALICIA"
-                                    {{ old('customer_group', $customer->customer_group) == 'COCINA DE ALICIA' ? 'selected' : '' }}>
-                                    COCINA DE ALICIA</option>
-                                <option value="KUMPARES"
-                                    {{ old('customer_group', $customer->customer_group) == 'KUMPARES' ? 'selected' : '' }}>
-                                    KUMPARES</option>
-                                <option value="HIPPERS"
-                                    {{ old('customer_group', $customer->customer_group) == 'HIPPERS' ? 'selected' : '' }}>
-                                    HIPPERS</option>
-                                <option value="QUEEN SISIG"
-                                    {{ old('customer_group', $customer->customer_group) == 'QUEEN SISIG' ? 'selected' : '' }}>
-                                    QUEEN SISIG</option>
-                                <option value="KA MELY'S BIBINGKA"
-                                    {{ old('customer_group', $customer->customer_group) == "KA MELY'S BIBINGKA" ? 'selected' : '' }}>
-                                    KA MELY'S BIBINGKA</option>
-                                <option value="BALAGTAS TOWN CENTER"
-                                    {{ old('customer_group', $customer->customer_group) == 'BALAGTAS TOWN CENTER' ? 'selected' : '' }}>
-                                    BALAGTAS TOWN CENTER</option>
-                                <option value="MALOLOS CITY TERMINAL HUB"
-                                    {{ old('customer_group', $customer->customer_group) == 'MALOLOS CITY TERMINAL HUB' ? 'selected' : '' }}>
-                                    MALOLOS CITY TERMINAL HUB</option>
-                                <option value="CRVE BY CARA"
-                                    {{ old('customer_group', $customer->customer_group) == 'CRVE BY CARA' ? 'selected' : '' }}>
-                                    CRVE BY CARA</option>
-                                <option value="ONE MIGHTY FOOD CORPORATION"
-                                    {{ old('customer_group', $customer->customer_group) == 'ONE MIGHTY FOOD CORPORATION' ? 'selected' : '' }}>
-                                    ONE MIGHTY FOOD CORPORATION</option>
-                                <option value="Q-AGRI FARM"
-                                    {{ old('customer_group', $customer->customer_group) == 'Q-AGRI FARM' ? 'selected' : '' }}>
-                                    Q-AGRI FARM</option>
-                                <option value="CONTIS BAKESHOP"
-                                    {{ old('customer_group', $customer->customer_group) == 'CONTIS BAKESHOP' ? 'selected' : '' }}>
-                                    CONTIS BAKESHOP</option>
-                                <option value="JOLLIBEE MAMBUGAN"
-                                    {{ old('customer_group', $customer->customer_group) == 'JOLLIBEE MAMBUGAN' ? 'selected' : '' }}>
-                                    JOLLIBEE MAMBUGAN</option>
-                            </select>
-                        </div>
+
                         <div class="mt-8">
                             <button type="submit"
                                 class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none">

@@ -31,6 +31,14 @@
                             </div>
 
                             <div>
+                                <label for="contact_person" class="block text-sm font-medium text-gray-700">Contact
+                                    Person</label>
+                                <input type="text" name="contact_person" id="contact_person"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                            </div>
+
+
+                            <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                                 <input type="email" name="email" id="email"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
@@ -43,36 +51,12 @@
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
                             </div>
 
-                            <div>
-                                <label for="gst_number" class="block text-sm font-medium text-gray-700">GST Number</label>
-                                <input type="text" name="gst_number" id="gst_number"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                            </div>
                         </div>
 
                         <div class="mb-4">
                             <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
                             <textarea name="address" id="address" rows="4"
                                 class="mt-1 mb-6 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"></textarea>
-                        </div>
-
-
-                        <div>
-                            <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                            <input type="text" name="city" id="city"
-                                class="mt-1 mb-10 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                        </div>
-
-                        <div>
-                            <label for="state" class="block text-sm font-medium text-gray-700">State</label>
-                            <input type="text" name="state" id="state"
-                                class="mt-1 mb-10 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                        </div>
-
-                        <div>
-                            <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-                            <input type="text" name="country" id="country"
-                                class="mt-1 mb-10 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
                         </div>
 
 

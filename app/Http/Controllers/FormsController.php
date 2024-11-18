@@ -49,35 +49,19 @@ class FormsController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Forms $forms)
+    public function pullout_form()
     {
-        //
+        return view('admin.forms.create-pullout');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Forms $forms)
+    public function delivery_form()
     {
-        //
+        return view('admin.forms.delivery-form');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Forms $forms)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Forms $forms)
+    public function delivery_receipt()
     {
-        //
+        return view('admin.forms.delivery-receipt');
     }
 }

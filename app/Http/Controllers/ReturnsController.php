@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReturnsRequest;
 use App\Models\Customers;
+use App\Models\Income;
+use App\Models\ReturnItems;
 use App\Models\Returns;
+use App\Models\SalesItems;
 use Illuminate\Http\Request;
 
 class ReturnsController extends Controller
@@ -14,7 +17,8 @@ class ReturnsController extends Controller
      */
     public function index()
     {
-        $returns = Returns::with('customer')->get();
+        $returns = ReturnItems::with(['sales', 'serial.product', 'customer'])->get();
+        // dd($returns);
         return view('admin.returns.index', compact('returns'));
     }
 
@@ -23,35 +27,63 @@ class ReturnsController extends Controller
      */
     public function create()
     {
+        $total = Returns::count();
+        if ($total >= 0) {
+            $total++;
+        }
+        $returnNo = "RN" . "-" . date('Y') . "-00" . $total;
         $customer = Customers::all();
-        return view('admin.returns.create', compact('customer'));
+        return view('admin.returns.create', compact('customer', 'returnNo'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreReturnsRequest $request)
+    public function store(Request $request)
     {
-        $validatedData = $request->validated();
 
-        if ($request->hasFile('attach_document')) {
-            $filePath = $request->file('attach_document')->store('documents', 'public');
+        $validated = $request->validate([
+            'sales_id' => 'required|integer',
+            'sales_item_id' => 'required|integer',
+            'product_serial' => 'required|string',
+            'date_added' => 'required|date',
+            'reference_no' => 'required|string',
+            'customer_id' => 'required|integer',
+            'return_notes' => 'nullable|string',
+        ]);
 
-            $validatedData['attach_document'] = $filePath;
+        $income = Income::where('serial_id', $validated['sales_item_id'])->first();
+        if ($income) {
+            $income->update([
+                'serial_id' => $validated['product_serial'],
+            ]);
         }
+        $salesItem = SalesItems::where('product_serial_id', $validated['sales_item_id'])->first();
+        if ($salesItem) {
+            $salesItem->update([
+                'product_serial_id' => $validated['product_serial']
+            ]);
+        }
+        ReturnItems::create([
+            'sales_id' => $validated['sales_id'],
+            'serial_id' => $validated['product_serial'],
+            'date_return' => $validated['date_added'],
+            'return_no' => $validated['reference_no'],
+            'customer_id' => $validated['customer_id'],
+            'remarks' => $validated['return_notes'],
+        ]);
 
-        Returns::create($validatedData);
-
-        return redirect()->route('returns.index')->with('success', 'Returns data added successfully');
+        return redirect()->route('sales.index')->with('success', 'Return record has been recorded.');
     }
 
 
     /**
      * Display the specified resource.
      */
-    public function show(Returns $returns)
+    public function show($id)
     {
-        //
+        $data = ReturnItems::with(['sales', 'serial.product', 'customer'])->find($id);
+        return view('admin.returns.view', compact('data'));
     }
 
     /**

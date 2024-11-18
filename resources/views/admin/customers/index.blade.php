@@ -25,7 +25,6 @@
                                 <th class="px-4 py-2 border-b">Name</th>
                                 <th class="px-4 py-2 border-b">Email</th>
                                 <th class="px-4 py-2 border-b">Phone Number</th>
-                                <th class="px-4 py-2 border-b">Country</th>
                                 <th class="px-4 py-2 border-b">Order Count</th>
                                 <th class="px-4 py-2 border-b">Status</th>
                                 <th class="px-4 py-2 border-b">Last Order</th>
@@ -39,7 +38,6 @@
                                     <td class="border-b px-4 py-2">{{ $customer->name }}</td>
                                     <td class="border-b px-4 py-2">{{ $customer->email }}</td>
                                     <td class="border-b px-4 py-2">{{ $customer->phone_number }}</td>
-                                    <td class="border-b px-4 py-2">{{ $customer->country }}</td>
                                     <td class="border-b px-4 py-2">{{ $customer->orders->count() }}</td>
                                     <td class="border-b px-4 py-2">
                                         @php

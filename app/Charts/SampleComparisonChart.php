@@ -38,12 +38,12 @@ class SampleComparisonChart
         $revenueValues = array_fill(1, 12, 0);
         $costValues = array_fill(1, 12, 0);
 
-        $revenueDataQuery = Income::selectRaw('MONTH(income_date) as month, product_id, SUM(amount) as total_revenue')
-            ->whereYear('income_date', date('Y'))
+        $revenueDataQuery = Income::selectRaw('MONTH(created_at) as month, product_id, SUM(amount) as total_revenue')
+            ->whereYear('created_at', date('Y'))
             ->groupBy('month', 'product_id');
 
         if ($month) {
-            $revenueDataQuery->whereMonth('income_date', $month);
+            $revenueDataQuery->whereMonth('created_at', $month);
         }
 
         $revenueData = $revenueDataQuery->get();

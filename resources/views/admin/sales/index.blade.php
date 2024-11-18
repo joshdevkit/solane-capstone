@@ -39,7 +39,7 @@
                             @forelse ($sales as $sale)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ date('F d, Y', strtotime($sale->date_added)) }}</td>
+                                        {{ date('F d, Y h:i A', strtotime($sale->created_at)) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $sale->customer->name ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap relative">
                                         @php
@@ -77,8 +77,6 @@
                                             0.00
                                         @endif
                                     </td>
-
-
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($sale->sale_status == 'completed')
                                             <span
@@ -89,7 +87,7 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $sale->biller }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $sale->order_tax }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ number_format($sale->order_tax, 0) }}%</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('sales.show', ['sale' => $sale->id]) }}"
                                             class="text-yellow-500 mr-2 hover:text-yellow-700" title="View">
@@ -104,8 +102,13 @@
                                             <x-lucide-trash class="w-5 h-5 inline" />
                                         </button>
 
+                                        <a href="{{ route('sales-returns', ['id' => $sale->id]) }}"
+                                            class="text-green-500 hover:text-green-700" title="Return">
+                                            <x-lucide-rotate-cw class="w-5 h-5 inline" />
+                                        </a>
+
                                         <div id="delete-modal"
-                                            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                            class="z-10 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
                                             <div class="bg-white rounded-lg p-6 shadow-lg">
                                                 <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
                                                 <p class="mb-4">Are you sure you want to delete this Sale?</p>
@@ -161,6 +164,5 @@
                 form.submit();
             }
         }
-    </script>
     </script>
 @endsection

@@ -49,22 +49,20 @@
                         <div class="mb-4" id="serial_numbers_container">
                         </div>
 
-
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="mb-4">
+                            {{-- <div class="mb-4">
                                 <label for="date_added" class="block text-sm font-medium text-gray-700">Date</label>
-                                <input type="date" name="date_added" id="date_added"
+                                <input type="text" name="date_added" id="date_added"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('date_added') }}">
-                            </div>
+                                    value="{{ $date }}">
+                            </div> --}}
 
                             <div class="mb-4">
                                 <label for="reference_no" class="block text-sm font-medium text-gray-700">Reference
                                     No</label>
-                                <input type="text" name="reference_no" id="reference_no"
+                                <input readonly type="text" name="reference_no" id="reference_no"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('reference_no') }}">
+                                    value="{{ $refNo }}">
                             </div>
                         </div>
 
@@ -127,8 +125,7 @@
                             <label for="attached_document" class="block text-sm font-medium text-gray-700">Attached
                                 Document</label>
                             <input type="file" name="attached_document" id="attached_document"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                accept=".pdf,.csv,.xls,.xlsx,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel">
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
                         </div>
 
 
@@ -144,8 +141,6 @@
                                         Completed</option>
                                     <option value="pending" {{ old('sale_status') == 'pending' ? 'selected' : '' }}>
                                         Pending</option>
-                                    <option value="canceled" {{ old('sale_status') == 'canceled' ? 'selected' : '' }}>
-                                        Canceled</option>
                                 </select>
                             </div>
 
@@ -159,8 +154,6 @@
                                     </option>
                                     <option value="unpaid" {{ old('payment_status') == 'unpaid' ? 'selected' : '' }}>
                                         Unpaid</option>
-                                    <option value="refunded" {{ old('payment_status') == 'refunded' ? 'selected' : '' }}>
-                                        Refunded</option>
                                 </select>
                             </div>
                         </div>

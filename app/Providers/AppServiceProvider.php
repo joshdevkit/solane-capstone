@@ -35,7 +35,9 @@ class AppServiceProvider extends ServiceProvider
             $lowStockProducts = Products::where('quantity', '<', 20)->get();
 
             if ($lowStockProducts->isNotEmpty()) {
-                $users = User::all();
+                $users = User::whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'Sales');
+                })->get();
 
                 foreach ($lowStockProducts as $product) {
                     foreach ($users as $user) {

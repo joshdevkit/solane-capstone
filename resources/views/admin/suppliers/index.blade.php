@@ -23,10 +23,9 @@
                         <thead>
                             <tr>
                                 <th class="px-4 py-2 border-b">Company Name</th>
+                                <th class="px-4 py-2 border-b">Contact Person</th>
                                 <th class="px-4 py-2 border-b">Email</th>
                                 <th class="px-4 py-2 border-b">Phone Number</th>
-                                <th class="px-4 py-2 border-b">Country</th>
-
                                 <th class="px-4 py-2 border-b">Actions</th>
                             </tr>
                         </thead>
@@ -35,10 +34,9 @@
                                 <tr>
 
                                     <td class="border-b px-4 py-2">{{ $supplier->name }}</td>
+                                    <td class="border-b px-4 py-2">{{ $supplier->contact_person }}</td>
                                     <td class="border-b px-4 py-2">{{ $supplier->email }}</td>
                                     <td class="border-b px-4 py-2">{{ $supplier->phone_number }}</td>
-                                    <td class="border-b px-4 py-2">{{ $supplier->country }}</td>
-
                                     <td class="py-2 px-4 border-b">
                                         <a href="{{ route('suppliers.show', ['supplier' => $supplier]) }}"
                                             class="text-yellow-500 mr-2 hover:text-yellow-700" title="View">

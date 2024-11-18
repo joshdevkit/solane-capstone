@@ -7,6 +7,7 @@ use App\Models\Customers;
 use App\Models\Income;
 use App\Models\ProductBarcodes;
 use App\Models\Products;
+use App\Models\Returns;
 use App\Models\Sales;
 use App\Models\SalesItems;
 use Illuminate\Http\Request;
@@ -47,12 +48,14 @@ class SalesController extends Controller
      */
     public function create(Request $request)
     {
-
-
+        $ref = Sales::count();
+        if ($ref >= 0) {
+            $ref++;
+        }
+        $refNo = " DR-" . date('Y') . "-00" . $ref;
         $products = Products::all();
         $customers = Customers::all();
-
-        return view('admin.sales.create', compact('products', 'customers'));
+        return view('admin.sales.create', compact('products', 'customers', 'refNo'));
     }
 
     /**
@@ -62,26 +65,31 @@ class SalesController extends Controller
     {
         $validatedData = $request->validated();
 
-        $filename = time() . '_' . $request->file('attached_document')->getClientOriginalName();
-        $documentPath = public_path('documents');
-        if (!file_exists($documentPath)) {
-            mkdir($documentPath, 0755, true);
+        $filename = null;
+        if ($request->hasFile('attached_document')) {
+            $filename = time() . '_' . $request->file('attached_document')->getClientOriginalName();
+            $documentPath = public_path('documents');
+
+            if (!file_exists($documentPath)) {
+                mkdir($documentPath, 0755, true);
+            }
+
+            $request->file('attached_document')->move($documentPath, $filename);
         }
-        $request->file('attached_document')->move($documentPath, $filename);
 
         $sales = Sales::create([
-            'date_added' => $validatedData['date_added'],
             'reference_no' => $validatedData['reference_no'],
             'biller' => $validatedData['biller'],
             'customer_id' => $validatedData['customer_id'],
             'order_tax' => $validatedData['order_tax'],
             'order_discount' => $validatedData['order_discount'],
             'shipping' => $validatedData['shipping'],
-            'attached_documents' => 'documents/' . $filename,
+            'attached_documents' => $filename ? 'documents/' . $filename : '',
             'sale_status' => $validatedData['sale_status'],
             'payment_status' => $validatedData['payment_status'],
             'sales_note' => $validatedData['sales_note'],
         ]);
+
 
         foreach ($validatedData['product_id'] as $productId) {
             $serialKey = "product_serial_id_$productId";
@@ -91,6 +99,8 @@ class SalesController extends Controller
 
                 foreach ($request->input($serialKey) as $serialId) {
                     $amount = $product->price * $discount;
+                    $taxDeduction = ($validatedData['order_tax'] / 100) * $amount;
+                    $finalAmount = $amount - $taxDeduction;
 
                     SalesItems::create([
                         'sales_id' => $sales->id,
@@ -102,8 +112,7 @@ class SalesController extends Controller
                         'sales_id' => $sales->id,
                         'product_id' => $productId,
                         'serial_id' => $serialId,
-                        'amount' => $amount,
-                        'income_date' => $sales->date_added
+                        'amount' => $finalAmount,
                     ]);
                 }
             }
@@ -198,5 +207,24 @@ class SalesController extends Controller
         $income->save();
 
         return response()->json(['success' => true]);
+    }
+
+    public function return_items($id)
+    {
+        $total = Returns::count();
+        if ($total >= 0) {
+            $total++;
+        }
+        $returnNo = "RN" . "-" . date('Y') . "-00" . $total;
+        $customer = Customers::all();
+        $items = [];
+        $salesItems = SalesItems::with(['productSerial', 'product'])->where('sales_id', $id)->get();
+        // foreach ($salesItems as $item) {
+        //     $items = $item;
+        // }
+        // $availableProductSerials = ProductBarcodes::where('product_id', '!=', $items->productSerial->barcode)->get();
+        // dd($availableProductSerials);
+
+        return view('admin.returns.create', compact('salesItems', 'returnNo', 'customer', 'id'));
     }
 }

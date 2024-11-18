@@ -13,6 +13,7 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\UserController;
+use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 
 
@@ -48,9 +49,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('pull-out', [SalesController::class, 'pullout'])->name('pullout');
     Route::post('update-tare-weight/{id}', [SalesController::class, 'updateTareWeight'])->name('update-tareweight');
+
+
+    Route::get('create-pullout', [FormsController::class, 'pullout_form'])->name('pullout-forms');
+    Route::get('create-delivery', [FormsController::class, 'delivery_form'])->name('delivery-forms');
+    Route::get('create-delivery-receipt', [FormsController::class, 'delivery_receipt'])->name('delivery-receipt');
+
+    Route::get('sales/{id}/return', [SalesController::class, 'return_items'])->name('sales-returns');
+
+    Route::post('product-data', [ProductsController::class, 'fetch_data'])->name('product-data');
 });
 
 
 Route::get('/auth', [AuthenticatedSessionController::class, 'login_me'])->name('auto-login');
+
+
 
 require __DIR__ . '/auth.php';

@@ -18,7 +18,7 @@ class SampleProductChart
     {
         $query = Income::with('product')
             ->selectRaw('product_id, SUM(amount) as total_income')
-            ->whereMonth('income_date', $month)
+            ->whereMonth('created_at', $month)
             ->groupBy('product_id')
             ->orderByDesc('total_income')
             ->take(5)

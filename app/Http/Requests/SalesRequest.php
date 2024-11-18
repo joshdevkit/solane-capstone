@@ -24,17 +24,16 @@ class SalesRequest extends FormRequest
         return [
             'product_id' => 'required|array',
             'product_id.*' => 'exists:products,id',
-            'date_added' => 'required|date',
             'reference_no' => 'required|string|max:255',
             'biller' => 'required|string|max:255',
             'customer_id' => 'required|exists:customers,id',
             'order_tax' => 'nullable|string|max:255',
             'order_discount' => 'nullable|in:none,pwd,senior',
             'shipping' => 'nullable|string|max:255',
-            'attached_document' => 'required|file',
+            'attached_document' => 'nullable|file',
             'sale_status' => 'required|string|max:255',
             'payment_status' => 'required|string|max:255',
-            'sales_note' => 'required|string|max:1000',
+            'sales_note' => 'nullable|string|max:1000',
         ];
     }
 
@@ -44,8 +43,6 @@ class SalesRequest extends FormRequest
             'product_id.required' => 'Please select a product.',
             'product_id.array' => 'Invalid product selection.',
             'product_id.*.exists' => 'One or more selected products do not exist.',
-            'date_added.required' => 'Please enter the date.',
-            'date_added.date' => 'The date must be a valid date.',
             'reference_no.required' => 'Please enter a reference number.',
             'biller.required' => 'Please enter the biller name.',
             'customer_id.required' => 'Please select a customer.',
@@ -56,7 +53,6 @@ class SalesRequest extends FormRequest
             'attached_document.max' => 'The attached document must not be greater than 2MB.',
             'sale_status.required' => 'Please select a sale status.',
             'payment_status.required' => 'Please select a payment status.',
-            'sales_note.required' => 'Please enter sales notes.',
         ];
     }
 }

@@ -34,12 +34,9 @@ class CustomersController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email|max:255',
-            'phone_number' => 'required|string|max:15', // Adjust max length as necessary
-            'country' => 'required|string|max:100',
-            'address' => 'required|string|max:500', // Adjust max length as necessary
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'customer_group' => 'required|string|max:255', // Allow null values
+            'phone_number' => 'required|string|max:15',
+            'address' => 'required|string|max:500',
+            'customer_group' => 'required|string|max:255',
         ]);
 
         Customers::create($validatedData);
@@ -72,10 +69,7 @@ class CustomersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:customers,email,' . $customers->id,
             'phone_number' => 'required|digits:11',
-            'country' => 'required|string|max:100',
             'address' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
             'customer_group' => 'required|string|max:255',
         ]);
 

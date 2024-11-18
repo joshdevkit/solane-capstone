@@ -43,12 +43,17 @@
                                 <input type="text" name="phone_number" id="phone_number"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
                             </div>
-
-                            <div>
-                                <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-                                <input type="text" name="country" id="country"
+                            <div class="mb-4">
+                                <label for="customer_group" class="block text-sm font-medium text-gray-700">Customer
+                                    Group</label>
+                                <select name="customer_group" id="customer_group"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <option value="">Select Customer Group</option>
+                                    <option value="COMMERCIAL">COMMERCIAL</option>
+                                    <option value="PRIVATE">PRIVATE</option>
+                                </select>
                             </div>
+
                         </div>
 
                         <div class="mb-4">
@@ -58,48 +63,6 @@
                         </div>
 
 
-                        <div>
-                            <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                            <input type="text" name="city" id="city"
-                                class="mt-1 mb-10 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                        </div>
-
-                        <div>
-                            <label for="state" class="block text-sm font-medium text-gray-700">State</label>
-                            <input type="text" name="state" id="state"
-                                class="mt-1 mb-10 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="customer_group" class="block text-sm font-medium text-gray-700">Customer
-                                Group</label>
-                            <select name="customer_group" id="customer_group"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                                <option value="">Select Customer Group</option>
-                                <option value="KUSINA CO.">KUSINA CO.</option>
-                                <option value="BITES TOGO INC.">BITES TOGO INC.</option>
-                                <option value="LOURDES BIBINGKA">LOURDES BIBINGKA</option>
-                                <option value="XENTROMALL SANTIAGO">XENTROMALL SANTIAGO</option>
-                                <option value="NORTHSTAR ISABELA">NORTHSTAR ISABELA</option>
-                                <option value="RS CANTEEN">RS CANTEEN</option>
-                                <option value="EASTGATE BUSINESS CENTER">EASTGATE BUSINESS CENTER</option>
-                                <option value="LZV FOOD SERVICES">LZV FOOD SERVICES</option>
-                                <option value="SAMGYUPSALBBQBARN">SAMGYUPSALBBQBARN</option>
-                                <option value="AMRC HOLDINGS CO. INC.">AMRC HOLDINGS CO. INC.</option>
-                                <option value="COCINA DE ALICIA">COCINA DE ALICIA</option>
-                                <option value="KUMPARES">KUMPARES</option>
-                                <option value="HIPPERS">HIPPERS</option>
-                                <option value="QUEEN SISIG">QUEEN SISIG</option>
-                                <option value="KA MELY'S BIBINGKA">KA MELY'S BIBINGKA</option>
-                                <option value="BALAGTAS TOWN CENTER">BALAGTAS TOWN CENTER</option>
-                                <option value="MALOLOS CITY TERMINAL HUB">MALOLOS CITY TERMINAL HUB</option>
-                                <option value="CRVE BY CARA">CRVE BY CARA</option>
-                                <option value="ONE MIGHTY FOOD CORPORATION">ONE MIGHTY FOOD CORPORATION</option>
-                                <option value="Q-AGRI FARM">Q-AGRI FARM</option>
-                                <option value="CONTIS BAKESHOP">CONTIS BAKESHOP</option>
-                                <option value="JOLLIBEE MAMBUGAN">JOLLIBEE MAMBUGAN</option>
-                            </select>
-                        </div>
 
                         <div class="flex items-center justify-between">
                             <button type="submit"

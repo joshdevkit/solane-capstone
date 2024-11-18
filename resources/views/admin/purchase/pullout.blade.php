@@ -25,7 +25,9 @@
                     <table class="min-w-full bg-white border-2 border-gray-100">
                         <thead>
                             <tr>
-
+                                <th
+                                    class="px-6 py-6 text-xs bg-gray-100 font-medium uppercase tracking-wider border-2 border-gray-200 text-center">
+                                    Product</th>
                                 <th
                                     class="px-6 py-6 text-xs bg-gray-100 font-medium uppercase tracking-wider border-2 border-gray-200 text-center">
                                     Serial Number</th>
@@ -49,7 +51,9 @@
                         <tbody id="tableBody">
                             @forelse ($pullout as $record)
                                 <tr>
-
+                                    <td class="px-6 py-4 whitespace-nowrap border-2 border-gray-200 text-center">
+                                        {{ $record->product->name }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap border-2 border-gray-200 text-center">
                                         #{{ $record->productBarcode ? $record->productBarcode->barcode : 'N/A' }}
                                     </td>

@@ -132,7 +132,7 @@
                                             </select>
                                         </td>
                                         <td class="py-3 px-6">
-                                            <select disabled name="product_serial_id[]"
+                                            <select name="product_serial_id[]"
                                                 class="block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
                                                 @foreach ($item->productSerials as $serial)
                                                     <option value="{{ $serial->id }}"

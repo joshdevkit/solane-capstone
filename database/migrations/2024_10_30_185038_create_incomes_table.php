@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('serial_id');
             $table->decimal('amount', 10, 2);
-            $table->date('income_date');
             $table->timestamps();
             $table->foreign('sales_id')->references('id')->on('sales')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

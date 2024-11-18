@@ -6,6 +6,7 @@ use App\Models\Categories;
 use App\Models\ProductBarcodes;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
@@ -214,5 +215,16 @@ class ProductsController extends Controller
         $path = $request->file('image')->store('temp');
 
         return response()->json(['path' => $path]);
+    }
+
+
+    public function fetch_data(Request $request)
+    {
+        $excludedBarcodes = DB::table('incomes')->pluck('serial_id');
+        $productData = ProductBarcodes::where('id', '!=', $request->input('sales_item_id'))
+            ->whereNotIn('id', $excludedBarcodes)
+            ->get();
+
+        return response()->json($productData);
     }
 }

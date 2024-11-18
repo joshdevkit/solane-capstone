@@ -25,25 +25,13 @@
                             <p class="mt-1 text-lg text-gray-900">{{ $customers->phone_number }}</p>
                         </div>
 
-                        <div class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700">Country</label>
-                            <p class="mt-1 text-lg text-gray-900">{{ $customers->country }}</p>
-                        </div>
+
 
                         <div class="col-span-1 md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700">Address</label>
                             <p class="mt-1 text-lg text-gray-900">{{ $customers->address }}</p>
                         </div>
 
-                        <div class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700">City</label>
-                            <p class="mt-1 text-lg text-gray-900">{{ $customers->city }}</p>
-                        </div>
-
-                        <div class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700">State</label>
-                            <p class="mt-1 text-lg text-gray-900">{{ $customers->state }}</p>
-                        </div>
 
                         <div class="col-span-1 md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700">Customer Group</label>

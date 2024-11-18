@@ -37,17 +37,8 @@
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                         </div>
 
-                        <div class="col-span-1">
-                            <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                            <input type="text" name="address" id="address"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        </div>
 
-                        <div class="col-span-1">
-                            <label for="birthday" class="block text-sm font-medium text-gray-700">Birthday</label>
-                            <input type="date" name="birthday" id="birthday"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        </div>
+
 
                         <div class="col-span-1">
                             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>

@@ -33,11 +33,8 @@ class SuppliersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email|max:255',
             'phone_number' => 'required|string|max:15',
-            'gst_number' => 'required|string|max:100',
+            'contact_person' => 'required|string|max:100',
             'address' => 'required|string|max:500',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'country' => 'required|string|max:255',
         ]);
 
         Suppliers::create($validatedData);
@@ -73,11 +70,8 @@ class SuppliersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:suppliers,email,' . $customers->id,
             'phone_number' => 'required|digits:11',
-            'gst_number' => 'required|string|max:100',
+            'contact_person' => 'required|string|max:100',
             'address' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'country' => 'required|string|max:255',
         ]);
 
         $customers->update($validatedData);

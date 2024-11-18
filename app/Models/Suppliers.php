@@ -13,10 +13,7 @@ class Suppliers extends Model
         'name',
         'email',
         'phone_number',
-        'gst_number',
+        'contact_person',
         'address',
-        'city',
-        'state',
-        'country'
     ];
 }

@@ -13,10 +13,7 @@ class Customers extends Model
         'name',
         'email',
         'phone_number',
-        'country',
         'address',
-        'city',
-        'state',
         'customer_group'
     ];
 

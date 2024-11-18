@@ -54,7 +54,7 @@
                                 'route' => '',
                                 'dropdownItems' => [
                                     ['label' => 'List Returns', 'route' => 'returns.index'],
-                                    ['label' => 'Add Returns', 'route' => 'returns.create'],
+                                    // ['label' => 'Add Returns', 'route' => 'returns.create'],
                                     ['label' => 'Pull Out Records', 'route' => 'pullout'],
                                 ],
                             ],
@@ -67,6 +67,13 @@
                                     ['label' => 'Add Customer', 'route' => 'customers.create'],
                                     ['label' => 'Suppliers', 'route' => 'suppliers.index'],
                                     ['label' => 'Add Suppliers', 'route' => 'suppliers.create'],
+                                ],
+                            ],
+                            [
+                                'icon' => 'assets/people.png',
+                                'label' => 'Accounts',
+                                'route' => '',
+                                'dropdownItems' => [
                                     ['label' => 'Users', 'route' => 'users.index'],
                                     ['label' => 'Add Users', 'route' => 'users.create'],
                                 ],

@@ -47,9 +47,9 @@
                             </div>
 
                             <div class="col-span-1">
-                                <label class="block text-sm font-medium text-gray-700">Gst Number</label>
-                                <input type="text" name="gst_number"
-                                    value="{{ old('gst_number', $suppliers->gst_number) }}"
+                                <label class="block text-sm font-medium text-gray-700">Contact Person</label>
+                                <input type="text" name="contact_person"
+                                    value="{{ old('contact_person', $suppliers->contact_person) }}"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             </div>
 
@@ -59,23 +59,8 @@
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             </div>
 
-                            <div class="col-span-1">
-                                <label class="block text-sm font-medium text-gray-700">City</label>
-                                <input type="text" name="city" value="{{ old('city', $suppliers->city) }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            </div>
 
-                            <div class="col-span-1">
-                                <label class="block text-sm font-medium text-gray-700">State</label>
-                                <input type="text" name="state" value="{{ old('state', $suppliers->state) }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            </div>
 
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700">Country</label>
-                            <input type="text" name="country" value="{{ old('country', $suppliers->country) }}"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
                         <div class="mt-8">

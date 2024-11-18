@@ -14,7 +14,6 @@ class Income extends Model
         'product_id',
         'serial_id',
         'amount',
-        'income_date'
     ];
 
     public function product()

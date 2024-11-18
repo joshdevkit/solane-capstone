@@ -16,11 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_number');
-            $table->string('country');
             $table->string('address');
-            $table->string('city');
-            $table->string('state');
-            $table->string('customer_group')->nullable();
+            $table->string('customer_group');
             $table->timestamps();
         });
     }

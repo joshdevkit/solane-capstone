@@ -22,28 +22,51 @@
                     @endif
                     <form action="{{ route('returns.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="sales_id" value="{{ $id }}">
+                        <div class="mb-4">
+                            <label for="date_added" class="block text-sm font-medium text-gray-700">Sales Item</label>
+                            <select name="sales_item_id" id="sales_item_id"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                <option value="">Select item to return</option>
+                                @foreach ($salesItems as $item)
+                                    <option value="{{ $item->productSerial->id }}">
+                                        {{ $item->product->name }} ( {{ $item->productSerial->barcode }} )
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="date_added" class="block text-sm font-medium text-gray-700">Sales Product
+                                Serial</label>
+                            <select name="product_serial" id="product_serial"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                <option value="">Select</option>
+
+                            </select>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <!-- sales items to retuns -->
+
+
+
                             <div class="mb-4">
-                                <label for="date_added" class="block text-sm font-medium text-gray-700">Date</label>
+                                <label for="date_added" class="block text-sm font-medium text-gray-700">Date Return</label>
                                 <input type="date" name="date_added" id="date_added"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
                                     value="{{ old('date_added') }}">
                             </div>
                             <div class="mb-4">
-                                <label for="reference_no" class="block text-sm font-medium text-gray-700">Reference
+                                <label for="reference_no" class="block text-sm font-medium text-gray-700">Return
                                     No</label>
                                 <input type="text" name="reference_no" id="reference_no"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('reference_no') }}">
+                                    value="{{ $returnNo }}">
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="mb-4">
-                                <label for="biller" class="block text-sm font-medium text-gray-700">Biller</label>
-                                <input type="text" name="biller" id="biller"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('biller') }}">
-                            </div>
+
                             <div class="mb-4">
                                 <label for="customer_id" class="block text-sm font-medium text-gray-700">Customer</label>
                                 <select name="customer_id" id="customer_id"
@@ -57,37 +80,18 @@
                                     @endforeach
                                 </select>
                             </div>
-
-
                             <div class="mb-4">
-                                <label for="order_tax" class="block text-sm font-medium text-gray-700">Order Tax</label>
-                                <input type="text" name="order_tax" id="order_tax"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('order_tax') }}">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="discount" class="block text-sm font-medium text-gray-700">Discount</label>
-                                <input type="text" name="discount" id="discount"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('discount') }}">
+                                <label for="attach_document" class="block text-sm font-medium text-gray-700">Attach
+                                    Document</label>
+                                <input class="mt-1  w-full bg-gray-300 border-gray-200" type="file"
+                                    name="attach_document" id="attach_document">
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <label for="shipping" class="block text-sm font-medium text-gray-700">Shipping</label>
-                            <input type="text" name="shipping" id="shipping"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                value="{{ old('shipping') }}">
-                        </div>
-                        <div class="mb-4">
-                            <label for="attach_document" class="block text-sm font-medium text-gray-700">Attach
-                                Document</label>
-                            <input class="w-full bg-gray-300 border-gray-200" type="file" name="attach_document"
-                                id="attach_document">
-                        </div>
+
+
 
                         <div class="mb-4">
-                            <label for="return_notes" class="block text-sm font-medium text-gray-700">Return Notes</label>
+                            <label for="return_notes" class="block text-sm font-medium text-gray-700">Remarks</label>
                             <textarea
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
                                 name="return_notes" rows="3">{{ old('return_notes') }}</textarea>
@@ -104,4 +108,45 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        document.getElementById('sales_item_id').addEventListener('change', function() {
+            const selectedValue = this.value;
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch('/product-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        sales_item_id: selectedValue,
+                    }),
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then((result) => {
+                    const productSerialDropdown = document.getElementById('product_serial');
+
+                    productSerialDropdown.innerHTML = '<option value="">Select</option>';
+
+                    result.forEach((item) => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.barcode;
+                        productSerialDropdown.appendChild(option);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Fetch Error:', error);
+                });
+        });
+    </script>
 @endsection
