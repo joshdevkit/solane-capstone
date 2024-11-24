@@ -2,9 +2,10 @@
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\CategoyController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\FormsController;
+use App\Http\Controllers\DeliveryReceiptController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
@@ -31,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('category', CategoyController::class);
+    Route::resource('category', CategoryController::class);
     Route::resource('products', ProductsController::class);
     Route::resource('sales', SalesController::class);
     Route::resource('customers', CustomersController::class);
@@ -43,13 +44,22 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/notifications/{id}/read', [StockController::class, 'markAsRead']);
 
-    Route::post('/category/upload', [CategoyController::class, 'upload'])->name('category.upload');
-    Route::post('/product/upload', [CategoyController::class, 'upload'])->name('product.upload');
+    Route::post('/category/upload', [CategoryController::class, 'upload'])->name('category.upload');
+    Route::post('/product/upload', [CategoryController::class, 'upload'])->name('product.upload');
     Route::get('/get-serial-numbers/{productId}', [SalesController::class, 'getSerialNumbers']);
 
     Route::get('pull-out', [SalesController::class, 'pullout'])->name('pullout');
     Route::post('update-tare-weight/{id}', [SalesController::class, 'updateTareWeight'])->name('update-tareweight');
-
+    Route::get('/pullout-form', [FormsController::class, 'pullout_form'])->name('pullout-form.create');
+    Route::post('/pullout-form', [FormsController::class, 'storePulloutForm'])->name('pullout-form.store');
+    Route::get('/pullout-form/{id}/pdf', [FormsController::class, 'pulloutForm'])->name('pullout-form.pdf');
+    Route::get('/forms', [FormsController::class, 'index'])->name('admin.forms.index');
+    // Route to store the form data
+    Route::post('/pullout-form/store', [FormsController::class, 'storePulloutForm'])->name('pullout-form.store');
+    Route::get('/forms/delivery', [FormsController::class, 'delivery_form'])->name('delivery-form.create');
+    Route::post('/forms/delivery', [FormsController::class, 'storeDeliveryForm'])->name('delivery-form.store');
+    Route::get('delivery-receipt/create', [DeliveryReceiptController::class, 'create'])->name('delivery-receipt.create');
+    Route::post('delivery-receipt/store', [DeliveryReceiptController::class, 'store'])->name('delivery-receipt.store');
 
     Route::get('create-pullout', [FormsController::class, 'pullout_form'])->name('pullout-forms');
     Route::get('create-delivery', [FormsController::class, 'delivery_form'])->name('delivery-forms');

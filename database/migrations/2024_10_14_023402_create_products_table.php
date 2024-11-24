@@ -17,14 +17,16 @@ return new class extends Migration
             $table->string('barcode_symbology');
             $table->string('net_weight');
             $table->unsignedBigInteger('category_id');
-            $table->decimal('cost')->default(8, 2);
-            $table->decimal('price')->default(8, 2);
-            $table->integer('quantity');
+            $table->decimal('cost', 10, 2)->default(8.00);  
+            $table->decimal('price', 10, 2)->default(8.00);
+            $table->integer('quantity')->default(0);      
             $table->string('product_image');
             $table->timestamps();
-
-
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            
+            $table->foreign('category_id')
+                  ->references('id')
+                  ->on('categories')
+                  ->onDelete('cascade');
         });
     }
 

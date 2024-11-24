@@ -15,6 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('form_name');
             $table->string('file_path');
+            // Pullout form fields
+            $table->date('date');
+            $table->string('plate');
+            $table->string('customer');
+            $table->string('dr');
+            $table->string('driver');
+            $table->string('seal_number');
+            $table->decimal('total_cylinder_weight', 10, 2);
+            $table->decimal('tare_weight', 10, 2);
             $table->timestamps();
         });
     }

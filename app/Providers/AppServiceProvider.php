@@ -6,6 +6,7 @@ use App\Models\Products;
 use App\Models\User;
 use App\Notifications\LowStockNotification;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema; // Import Schema
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,9 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->checkStockLevels();
+        if (Schema::hasTable('products') && Schema::hasTable('users')) {
+            $this->checkStockLevels();
+        }
     }
-
 
     protected function checkStockLevels()
     {

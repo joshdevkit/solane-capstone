@@ -18,8 +18,13 @@ class Products extends Model
         'cost',
         'price',
         'quantity',
-        'product_image',
-        'product_description'
+        'product_image'
+    ];
+
+    protected $casts = [
+        'cost' => 'decimal:2',
+        'price' => 'decimal:2',
+        'quantity' => 'integer'
     ];
 
 

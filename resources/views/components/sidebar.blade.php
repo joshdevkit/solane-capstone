@@ -7,6 +7,11 @@
         </div>
         <div class="overflow-y-auto py-5 px-3 h-full bg-gray-200 border-r border-gray-200">
             <ul class="space-y-2">
+                {{-- Initialize sidebarItems with a default empty array --}}
+                @php
+                    $sidebarItems = [];
+                @endphp
+
                 {{-- Admin Sidebar Items --}}
                 @role('Admin')
                     @php
@@ -54,7 +59,6 @@
                                 'route' => '',
                                 'dropdownItems' => [
                                     ['label' => 'List Returns', 'route' => 'returns.index'],
-                                    // ['label' => 'Add Returns', 'route' => 'returns.create'],
                                     ['label' => 'Pull Out Records', 'route' => 'pullout'],
                                 ],
                             ],
@@ -82,12 +86,15 @@
                                 'icon' => 'assets/category.png',
                                 'label' => 'Forms',
                                 'route' => '',
-                                'dropdownItems' => [['label' => 'List of Forms', 'route' => 'uploaded-forms.index']],
+                                'dropdownItems' => [
+                                    ['label' => 'List of Forms', 'route' => 'uploaded-forms.index'],
+                                ],
                             ],
                         ];
                     @endphp
                 @endrole
 
+                {{-- Inventory Sidebar Items --}}
                 @role('Inventory')
                     @php
                         $sidebarItems = [
@@ -137,6 +144,7 @@
                     @endphp
                 @endrole
 
+                {{-- Sales Sidebar Items --}}
                 @role('Sales')
                     @php
                         $sidebarItems = [
@@ -163,6 +171,7 @@
                     @endphp
                 @endrole
 
+                {{-- Render Sidebar Items --}}
                 @foreach ($sidebarItems as $item)
                     <x-sidebar-item :icon="$item['icon']" :label="$item['label']" :route="$item['route']" :dropdownItems="$item['dropdownItems'] ?? []" />
                 @endforeach

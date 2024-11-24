@@ -11,6 +11,14 @@ class Forms extends Model
 
     protected $fillable = [
         'form_name',
-        'file_path'
+        'file_path',
+        'date',
+        'plate',
+        'customer',
+        'dr',
+        'driver',
+        'seal_number',
+        'total_cylinder_weight',
+        'tare_weight'
     ];
 }

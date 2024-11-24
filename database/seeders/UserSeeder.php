@@ -12,7 +12,8 @@ class UserSeeder extends Seeder
 {
 
     public function run(): void
-    {
+{
+    try {
         $role = Role::firstOrCreate(['name' => 'Admin']);
 
         $user = User::create([
@@ -23,5 +24,9 @@ class UserSeeder extends Seeder
         ]);
 
         $user->assignRole($role);
+        echo "User seeded successfully.";
+    } catch (\Exception $e) {
+        echo "Error: " . $e->getMessage();
     }
+}
 }

@@ -6,7 +6,7 @@ use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class CategoyController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -48,7 +48,7 @@ class CategoyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Categories $categoy)
+    public function show(Categories $category)
     {
         //
     }
