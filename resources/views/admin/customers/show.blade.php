@@ -16,6 +16,11 @@
                         </div>
 
                         <div class="col-span-1">
+                            <label class="block text-sm font-medium text-gray-700">Contact Person</label>
+                            <p class="mt-1 text-lg font-semibold text-gray-900">{{ $customers->contact_person }}</p>
+                        </div>
+
+                        <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-700">Email</label>
                             <p class="mt-1 text-lg text-gray-900">{{ $customers->email }}</p>
                         </div>

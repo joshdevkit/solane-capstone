@@ -34,6 +34,13 @@
                             </div>
 
                             <div class="col-span-1">
+                                <label class="block text-sm font-medium text-gray-700">Contact Person</label>
+                                <input type="text" name="contact_person"
+                                    value="{{ old('contact_person', $customer->contact_person) }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+
+                            <div class="col-span-1">
                                 <label class="block text-sm font-medium text-gray-700">Email</label>
                                 <input type="email" name="email" value="{{ old('email', $customer->email) }}"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">

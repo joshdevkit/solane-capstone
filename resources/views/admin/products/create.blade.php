@@ -40,46 +40,17 @@
                                             <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
                                     </div>
-
-                                    <div>
-                                        <label for="serial_number" class="block text-sm font-medium text-gray-700">Serial
-                                            Number</label>
-                                        <div class="relative">
-                                            <div id="serial_number_tags"
-                                                class="flex flex-wrap border border-gray-300 rounded-md shadow-sm bg-white p-1">
-                                            </div>
-                                            <input type="text" id="serial_number" name="serial_number[]"
-                                                class="mt-1 block w-full border-0 focus:ring-0 bg-transparent text-gray-800"
-                                                placeholder="Click here to add a serial number and press Enter">
-                                        </div>
-                                        @error('serial_number')
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label for="barcode_symbology"
-                                            class="block text-sm font-medium text-gray-700">Barcode
-                                            Symbology</label>
+                                            class="block text-sm font-medium text-gray-700">Product Code</label>
                                         <input type="text" id="barcode_symbology" name="barcode_symbology"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                         @error('barcode_symbology')
                                             <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <div>
-                                        <label for="barcode_symbology" class="block text-sm font-medium text-gray-700">Net
-                                            Weight
-                                        </label>
-                                        <input type="text" id="net_weight" name="net_weight"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                        @error('net_weight')
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
-                                    </div>
                                 </div>
+
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
@@ -118,6 +89,24 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <table class="table w-full table-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="border-b p-2 text-center">Product ID</th>
+                                        <th class="border-b p-2 text-center">Serial No</th>
+                                        <th class="border-b p-2 text-center">Net Weight</th>
+                                        <th class="border-b p-2 text-center">Length</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dynamic_product">
+                                </tbody>
+                            </table>
+                            <button type="button" id="add-row"
+                                class="mt-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                Add Serial
+                            </button>
+
                         </div>
 
                         <div class="mt-6">
@@ -158,56 +147,114 @@
                 revert: null
             }
         });
+    </script>
 
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('serial_number');
-            const tagsContainer = document.getElementById('serial_number_tags');
+    <script>
+        $(document).ready(function() {
+            let productCounter = 1;
 
-            input.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    addSerialNumber();
+            $('#category_id').change(function() {
+                const categoryId = $(this).val();
+
+                if (categoryId) {
+                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: '{{ route('get-product-data', '') }}/' + categoryId,
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            if (data.exists) {
+                                console.log(`Total Quantity: ${data.total_quantity}`);
+                                productCounter = data.total_quantity + 1;
+                            } else {
+                                console.log('No products found for this category.');
+                                productCounter = 1;
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching product data:', error);
+                        },
+                    });
+                } else {
+                    console.log('Please select a category.');
                 }
             });
 
-            function addSerialNumber() {
-                const serialNumber = input.value.trim();
+            $('#add-row').click(function() {
+                const productId = String(productCounter).padStart(3, '0');
 
-                if (serialNumber) {
-                    const tag = document.createElement('div');
-                    tag.className =
-                        "flex items-center justify-between bg-blue-800 text-white rounded-md px-2 py-1 m-1";
-                    tag.innerText = serialNumber;
+                const newRow = `
+                    <tr>
+                        <td class="p-2">
+                            <input type="text" name="product_id[]" class="p-2 w-full" value="${productId}" readonly />
+                        </td>
+                        <td class="p-2">
+                            <input type="text" name="serial_no[]" class="p-2 w-full serial-no-input" />
+                            <span class="error-text text-red-500 text-xs hidden">This serial number already exists.</span>
+                        </td>
+                        <td class="p-2">
+                            <input type="text" name="net_weight[]" class="p-2 w-full" placeholder="Enter Net Weight" />
+                        </td>
+                        <td class="p-2">
+                            <input type="text" name="length[]" class="p-2 w-full" placeholder="Enter Length" />
+                        </td>
+                        <td class="p-2">
+                            <button class="remove-btn bg-red-500 text-white p-1 rounded-md hover:bg-red-600">
+                                <x-lucide-trash class="w-6 h-6" />
+                            </button>
+                        </td>
+                    </tr>
+                `;
 
-                    // Create a hidden input for the serial number
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'serial_number[]';
-                    hiddenInput.value = serialNumber; // Set the value to the valid serial number
+                $('#dynamic_product').append(newRow);
+                productCounter++;
 
-                    // Create a remove button (X)
-                    const removeButton = document.createElement('button');
-                    removeButton.innerHTML = '&times;'; // X symbol
-                    removeButton.className = 'ml-2 text-white focus:outline-none';
+                $('.remove-btn').last().click(function() {
+                    $(this).closest('tr').remove();
+                });
 
-                    // Add event listener to the remove button
-                    removeButton.addEventListener('click', function() {
-                        // Remove the tag from the container
-                        tagsContainer.removeChild(tag);
-                    });
+                $('.serial-no-input').last().on('input', function() {
+                    const serialNo = $(this).val().trim();
+                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-                    // Append the hidden input and remove button to the tag
-                    tag.appendChild(hiddenInput);
-                    tag.appendChild(removeButton);
+                    const inputField = $(this);
 
-                    // Append the new tag to the tags container
-                    tagsContainer.appendChild(tag);
+                    if (serialNo) {
+                        $.ajax({
+                            url: '{{ route('check-serial-existence') }}',
+                            method: 'GET',
+                            data: {
+                                serial_no: serialNo
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            success: function(data) {
+                                if (data.exists) {
+                                    inputField.css('border', '1px solid red');
+                                    inputField.next('.error-text').removeClass(
+                                        'hidden');
+                                    inputField.addClass('mt-5')
+                                } else {
+                                    inputField.css('border', '');
+                                    inputField.next('.error-text').addClass('hidden');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error checking serial number:', error);
+                            }
+                        });
+                    } else {
+                        inputField.css('border', '');
+                        inputField.next('.error-text').addClass('hidden');
+                    }
+                });
 
-                    // Clear the input field for the next entry
-                    input.value = '';
-                }
-            }
+            });
         });
     </script>
 @endsection

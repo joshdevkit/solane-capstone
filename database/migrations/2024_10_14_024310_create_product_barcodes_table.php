@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('product_barcodes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
+            $table->string('product_code');
             $table->string('barcode');
+            $table->decimal('net_weight', 11, 2)->default(0)->nullable();
+            $table->string('length')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

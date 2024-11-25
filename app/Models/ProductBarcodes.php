@@ -11,7 +11,10 @@ class ProductBarcodes extends Model
 
     protected $fillable = [
         'product_id',
-        'barcode'
+        'product_code',
+        'barcode',
+        'net_weight',
+        'length'
     ];
 
     public function product()

@@ -13,6 +13,7 @@
 
                     <div class="max-h-100 overflow-y-auto">
                         <div class="grid grid-cols-1 gap-4">
+                            <!-- Category Dropdown -->
                             <div class="mb-4">
                                 <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
                                 <select id="category_id" name="category_id"
@@ -28,7 +29,8 @@
                                 </select>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4">
+                            <!-- Product Name & Serial Number -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-gray-700">Product
                                         Name</label>
@@ -36,32 +38,62 @@
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         disabled>
                                 </div>
-
                                 <div>
-                                    <label for="serial_number" class="block text-sm font-medium text-gray-700">Serial
-                                        Number</label>
-                                    <div class="relative">
-                                        <div id="serial_number_tags"
-                                            class="flex flex-wrap border border-gray-300 rounded-md shadow-sm bg-white p-1 py-2.5 mt-1">
-                                            @foreach ($products->barcodes as $barcode)
-                                                <span
-                                                    class="bg-blue-200 ml-4 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-                                                    {{ $barcode->barcode }}
-                                                </span>
-                                            @endforeach
-                                        </div>
-                                    </div>
+                                    <label for="barcode_symbology" class="block text-sm font-medium text-gray-700">Product
+                                        Code</label>
+                                    <input type="text" id="barcode_symbology" name="barcode_symbology"
+                                        value="{{ $products->barcode_symbology }}"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="product_barcodes" class="block text-sm font-medium text-gray-700">Product
+                                    Barcodes</label>
+                                <div class="mt-2">
+                                    <table class="table-auto w-full border-collapse border border-gray-300">
+                                        <thead>
+                                            <tr class="bg-gray-100">
+                                                <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                    Product ID</th>
+                                                <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                    Product Serial</th>
+                                                <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                    Net Weight</th>
+                                                <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                    Length</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($products->barcodes as $barcode)
+                                                <tr>
+                                                    <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                        {{ $barcode->product_code }}
+                                                    </td>
+                                                    <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                        {{ $barcode->barcode }}
+                                                    </td>
+                                                    <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                        {{ $barcode->net_weight ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                        {{ $barcode->length ?? 'N/A' }}
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3"
+                                                        class="border border-gray-300 px-4 py-2 text-center text-sm text-gray-500">
+                                                        No barcodes available for this product.
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
-                            <div>
-                                <label for="barcode_symbology" class="block text-sm font-medium text-gray-700">Barcode
-                                    Symbology</label>
-                                <input type="text" id="barcode_symbology" name="barcode_symbology"
-                                    value="{{ $products->barcode_symbology }}"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                    disabled>
-                            </div>
+
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
@@ -85,8 +117,12 @@
                             <div class="mb-4">
                                 <label for="image" class="block text-gray-700">Image</label>
                                 <div>
-                                    <img src="{{ asset($products->product_image) }}" alt="{{ $products->name }}"
-                                        class="mt-1 max-h-32">
+                                    @if ($products->product_image)
+                                        <img src="{{ asset($products->product_image) }}" alt="{{ $products->name }}"
+                                            class="mt-1 max-h-32 object-contain">
+                                    @else
+                                        <div class="text-gray-500 italic">No image available</div>
+                                    @endif
                                 </div>
                             </div>
 

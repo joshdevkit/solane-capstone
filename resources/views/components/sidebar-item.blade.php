@@ -14,7 +14,7 @@
         <button type="button"
             class="flex items-center p-2 w-full text-base font-normal text-black rounded-lg transition duration-75 hover:bg-gray-300"
             aria-controls="{{ $label }}" data-collapse-toggle="{{ $label }}">
-            <img src="{{ asset($icon) }}" alt="{{ $label }} icon" class="w-6 h-6 flex-shrink-0">
+            <img src="{{ asset($icon) }}" alt="{{ $label }} icon" class="w-8 h-8 flex-shrink-0">
             <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ $label }}</span>
             <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd"

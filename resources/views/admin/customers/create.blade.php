@@ -32,6 +32,13 @@
                             </div>
 
                             <div>
+                                <label for="contact_person" class="block text-sm font-medium text-gray-700">Contact
+                                    Person</label>
+                                <input type="text" name="contact_person" id="contact_person"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                            </div>
+
+                            <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                                 <input type="email" name="email" id="email"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">

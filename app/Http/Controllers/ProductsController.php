@@ -8,6 +8,7 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
 {
@@ -39,12 +40,17 @@ class ProductsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'barcode_symbology' => 'required|string',
-            'net_weight' => 'required|string',
             'cost' => 'required|numeric',
             'price' => 'required|numeric',
             'image' => 'required|string',
-            'serial_number' => 'nullable|array',
-            'serial_number.*' => 'nullable|string',
+            'product_id' => 'required|array',
+            'product_id.*' => 'required|string',
+            'serial_no' => 'nullable|array',
+            'serial_no.*' => 'nullable|string',
+            'net_weight' => 'nullable|array',
+            'net_weight.*' => 'nullable|string',
+            'length' => 'nullable|array',
+            'length.*' => 'nullable|string',
             'product_description' => 'nullable|string',
         ]);
 
@@ -56,37 +62,36 @@ class ProductsController extends Controller
             if (!file_exists(dirname($targetFullPath))) {
                 mkdir(dirname($targetFullPath), 0755, true);
             }
-
             rename(storage_path('app/' . $tempPath), $targetFullPath);
         }
 
-        $barcodeCount = count(array_filter($validatedData['serial_number'] ?? []));
+        $totalQuantity = count(array_filter($validatedData['serial_no'] ?? []));
 
         $product = Products::create([
             'category_id' => $validatedData['category_id'],
             'name' => $validatedData['name'],
             'barcode_symbology' => $validatedData['barcode_symbology'],
-            'net_weight' => $validatedData['net_weight'],
             'cost' => $validatedData['cost'],
             'price' => $validatedData['price'],
-            'quantity' => $barcodeCount,
+            'quantity' => $totalQuantity,
             'product_image' => $targetPath,
             'product_description' => $validatedData['product_description'],
         ]);
 
-        // Save each non-null serial number as a barcode
-        if (!empty($validatedData['serial_number'])) {
-            foreach ($validatedData['serial_number'] as $barcode) {
-                if ($barcode) {
+        if (!empty($validatedData['serial_no'])) {
+            foreach ($validatedData['serial_no'] as $index => $serialNo) {
+                if ($serialNo) {
                     ProductBarcodes::create([
                         'product_id' => $product->id,
-                        'barcode' => $barcode,
+                        'product_code' => $validatedData['product_id'][$index] ?? null,
+                        'barcode' => $serialNo,
+                        'net_weight' => $validatedData['net_weight'][$index] ?? null,
+                        'length' => $validatedData['length'][$index] ?? null,
                     ]);
                 }
             }
         }
 
-        // Remove the temporary image file
         if (file_exists(storage_path('app/' . $tempPath))) {
             unlink(storage_path('app/' . $tempPath));
         }
@@ -95,13 +100,14 @@ class ProductsController extends Controller
     }
 
 
+
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
         $categories = Categories::all();
-        $products = Products::find($id);
+        $products = Products::with('barcodes')->find($id);
         return view('admin.products.show', compact('products', 'categories'));
     }
 
@@ -112,7 +118,7 @@ class ProductsController extends Controller
     public function edit($id)
     {
         $categories = Categories::all();
-        $products = Products::find($id);
+        $products = Products::with('barcodes')->find($id);
         return view('admin.products.edit', compact('products', 'categories'));
     }
 
@@ -121,18 +127,45 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Products $product)
     {
-        $request->validate([
+        $generalRules = [
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
-            'serial_number' => 'nullable|array',
-            'serial_number.*' => 'nullable|string',
             'barcode_symbology' => 'required|string|max:255',
-            'net_weight' => 'required|string|max:255',
-            'cost' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
+            'cost' => 'required|string',
+            'price' => 'required|string',
             'product_description' => 'nullable|string',
             'replaced_image' => 'nullable|image',
-        ]);
+        ];
+
+        $barcodes = $request->input('barcodes', []);
+        if (isset($barcodes['new'])) {
+            foreach ($barcodes['new']['product_code'] as $index => $product_code) {
+                $barcodes['new_' . $index] = [
+                    'product_code' => $product_code,
+                    'barcode' => $barcodes['new']['barcode'][$index] ?? null,
+                    'net_weight' => $barcodes['new']['net_weight'][$index] ?? null,
+                    'length' => $barcodes['new']['length'][$index] ?? null,
+                ];
+            }
+            unset($barcodes['new']);
+        }
+
+        $barcodeRules = [];
+        foreach ($barcodes as $key => $barcode) {
+            $barcodeRules["barcodes.$key.product_code"] = 'nullable|string';
+            $barcodeRules["barcodes.$key.barcode"] = 'nullable|string';
+            $barcodeRules["barcodes.$key.net_weight"] = 'nullable|string';
+            $barcodeRules["barcodes.$key.length"] = 'nullable|string';
+        }
+
+        $validator = Validator::make($request->merge(['barcodes' => $barcodes])->all(), array_merge($generalRules, $barcodeRules));
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         if ($request->hasFile('replaced_image')) {
             $oldImagePath = public_path($product->product_image);
@@ -142,54 +175,56 @@ class ProductsController extends Controller
             }
 
             $image = $request->file('replaced_image');
-
             $path = 'images/products/';
-
             $filename = time() . '_' . $image->getClientOriginalName();
-
             $image->move(public_path($path), $filename);
-
             $product->product_image = $path . $filename;
         }
-
-        $newBarcodes = $request->input('serial_number', []);
-        $newBarcodes = array_filter($newBarcodes, fn($barcode) => !is_null($barcode) && $barcode !== '');
-        $existingBarcodes = ProductBarcodes::where('product_id', $product->id)->get();
-        $existingBarcodeValues = $existingBarcodes->pluck('barcode')->toArray();
-
-        $barcodesToAdd = array_diff($newBarcodes, $existingBarcodeValues);
-        $barcodesToRemove = array_diff($existingBarcodeValues, $newBarcodes);
-        $barcodesToAdd = array_filter($barcodesToAdd, fn($barcode) => !is_null($barcode) && $barcode !== '');
-        $totalNewOrEdited = count($newBarcodes);
-
 
         $product->category_id = $request->category_id;
         $product->name = $request->name;
         $product->barcode_symbology = $request->barcode_symbology;
-        $product->net_weight = $request->net_weight;
         $product->cost = $request->cost;
         $product->price = $request->price;
-        $product->quantity = $totalNewOrEdited;
         $product->product_description = $request->product_description;
-
         $product->save();
-        foreach ($barcodesToAdd as $barcode) {
-            if ($existingBarcodes->where('barcode', $barcode)->isEmpty()) {
-                ProductBarcodes::create([
-                    'product_id' => $product->id,
-                    'barcode' => $barcode,
-                ]);
+
+        $existingBarcodes = ProductBarcodes::where('product_id', $product->id)->get();
+        $existingIds = $existingBarcodes->pluck('id')->toArray();
+        $submittedIds = array_keys(array_filter($barcodes, fn($k) => is_numeric($k), ARRAY_FILTER_USE_KEY));
+
+        $idsToDelete = array_diff($existingIds, $submittedIds);
+        ProductBarcodes::whereIn('id', $idsToDelete)->delete();
+
+        foreach ($barcodes as $id => $data) {
+            if (isset($data['barcode']) && $data['barcode'] !== null) {
+                if (is_numeric($id) && in_array($id, $existingIds)) {
+                    ProductBarcodes::where('id', $id)->update([
+                        'product_code' => $data['product_code'] ?? null,
+                        'barcode' => $data['barcode'],
+                        'net_weight' => $data['net_weight'] ?? null,
+                        'length' => $data['length'] ?? null,
+                    ]);
+                } else {
+                    ProductBarcodes::create([
+                        'product_id' => $product->id,
+                        'product_code' => $data['product_code'] ?? null,
+                        'barcode' => $data['barcode'],
+                        'net_weight' => $data['net_weight'] ?? null,
+                        'length' => $data['length'] ?? null,
+                    ]);
+                }
             }
         }
 
-        foreach ($barcodesToRemove as $barcode) {
-            ProductBarcodes::where('product_id', $product->id)
-                ->where('barcode', $barcode)
-                ->delete();
-        }
+        $product->quantity = ProductBarcodes::where('product_id', $product->id)->count();
+        $product->save();
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully!');
     }
+
+
+
 
 
     /**
@@ -226,5 +261,25 @@ class ProductsController extends Controller
             ->get();
 
         return response()->json($productData);
+    }
+
+
+    public function getProducts($categoryId)
+    {
+        $totalQuantity = Products::where('category_id', $categoryId)->first();
+        $exists = $totalQuantity->quantity > 0;
+
+        return response()->json([
+            'exists' => $exists,
+            'total_quantity' => $totalQuantity->quantity,
+        ]);
+    }
+
+
+    public function checkSerialExistence(Request $request)
+    {
+        $serialNo = $request->input('serial_no');
+        $exists = ProductBarcodes::where('barcode', $serialNo)->exists();
+        return response()->json(['exists' => $exists]);
     }
 }

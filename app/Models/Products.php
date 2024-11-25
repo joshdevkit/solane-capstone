@@ -13,7 +13,7 @@ class Products extends Model
     protected $fillable = [
         'name',
         'barcode_symbology',
-        'net_weight',
+        // 'net_weight',
         'category_id',
         'cost',
         'price',

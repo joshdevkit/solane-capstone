@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CategoyController;
 use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\ForecastController;
 use App\Http\Controllers\FormsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
@@ -56,8 +57,11 @@ Route::middleware('auth')->group(function () {
     Route::get('create-delivery-receipt', [FormsController::class, 'delivery_receipt'])->name('delivery-receipt');
 
     Route::get('sales/{id}/return', [SalesController::class, 'return_items'])->name('sales-returns');
-
+    Route::get('product-data/{category}', [ProductsController::class, 'getProducts'])->name('get-product-data');
+    Route::get('check-serial-existence', [ProductsController::class, 'checkSerialExistence'])->name('check-serial-existence');
     Route::post('product-data', [ProductsController::class, 'fetch_data'])->name('product-data');
+
+    // Route::get('predict-income', [ForecastController::class, 'predict']);
 });
 
 

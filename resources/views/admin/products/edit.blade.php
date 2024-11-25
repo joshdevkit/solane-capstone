@@ -44,62 +44,101 @@
                                     </select>
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                                     <div>
                                         <label for="name" class="block text-sm font-medium text-gray-700">Product
                                             Name</label>
                                         <input type="text" id="name" name="name" value="{{ $products->name }}"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     </div>
-
-                                    <div>
-                                        <label for="serial_number" class="block text-sm font-medium text-gray-700">Serial
-                                            Number</label>
-                                        <div class="relative">
-                                            <div id="serial_number_tags"
-                                                class="flex flex-wrap border border-gray-300 rounded-md shadow-sm bg-white p-1">
-                                                @foreach ($products->barcodes as $barcode)
-                                                    <div
-                                                        class="flex items-center justify-between bg-blue-800 text-white rounded-md px-2 py-0 m-1">
-                                                        <input type="text"
-                                                            class="bg-blue-800 text-white border-0 serial-input"
-                                                            value="{{ $barcode->barcode }}"
-                                                            onblur="updateSerialNumber(this)" />
-                                                        <button type="button"
-                                                            class="ml-2 text-white focus:outline-none remove-serial"
-                                                            onclick="removeExistingSerial(this);">&times;</button>
-                                                        <input type="hidden" name="serial_number[]"
-                                                            value="{{ $barcode->barcode }}">
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <input type="text" id="new_serial_number" name="serial_number[]"
-                                                class="mt-1 block w-full border-0 focus:ring-0 bg-transparent text-gray-800"
-                                                placeholder="Add a new serial number and press Enter">
-                                        </div>
-                                        @error('serial_number')
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label for="barcode_symbology"
-                                            class="block text-sm font-medium text-gray-700">Barcode
-                                            Symbology</label>
+                                            class="block text-sm font-medium text-gray-700">Product
+                                            Code</label>
                                         <input type="text" id="barcode_symbology" name="barcode_symbology"
                                             value="{{ $products->barcode_symbology }}"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     </div>
-                                    <div>
-                                        <label for="net_weight" class="block text-sm font-medium text-gray-700">Net
-                                            Weight</label>
-                                        <input type="text" id="net_weight" name="net_weight"
-                                            value="{{ $products->net_weight }}"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label for="product_barcodes" class="block text-sm font-medium text-gray-700">Product
+                                        Barcodes</label>
+                                    <div class="mt-2">
+                                        <table class="table-auto w-full border-collapse border border-gray-300"
+                                            id="barcodeTable">
+                                            <thead>
+                                                <tr class="bg-gray-100">
+                                                    <th
+                                                        class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                        Product ID</th>
+                                                    <th
+                                                        class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                        Serial Number</th>
+                                                    <th
+                                                        class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                        Net Weight</th>
+                                                    <th
+                                                        class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                        Length</th>
+                                                    <th
+                                                        class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
+                                                        Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($products->barcodes as $barcode)
+                                                    <tr>
+                                                        <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                            <input type="text"
+                                                                name="barcodes[{{ $barcode->id }}][product_code]"
+                                                                value="{{ $barcode->product_code }}"
+                                                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                                        </td>
+                                                        <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                            <input type="text"
+                                                                name="barcodes[{{ $barcode->id }}][barcode]"
+                                                                value="{{ $barcode->barcode }}"
+                                                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                                        </td>
+                                                        <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                            <input type="number"
+                                                                name="barcodes[{{ $barcode->id }}][net_weight]"
+                                                                value="{{ $barcode->net_weight }}"
+                                                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                                                step="0.01">
+                                                        </td>
+                                                        <td class="border border-gray-300 px-4 py-2 text-sm">
+                                                            <input type="number"
+                                                                name="barcodes[{{ $barcode->id }}][length]"
+                                                                value="{{ $barcode->length }}"
+                                                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                                                step="0.01">
+                                                        </td>
+                                                        <td class="border border-gray-300 px-4 py-2 text-sm text-center">
+                                                            <button type="button"
+                                                                class="text-red-500 remove-row">Remove</button>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5"
+                                                            class="border border-gray-300 px-4 py-2 text-center text-sm text-gray-500">
+                                                            No barcodes available for this product.
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="button" id="addRow"
+                                            class="bg-green-600 text-white px-4 py-2 rounded">Add More</button>
                                     </div>
                                 </div>
+
+
+
+
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
@@ -128,10 +167,9 @@
                                 </div>
                                 <div class="mb-4">
                                     <label for="new_image">Replace Image</label>
-                                    <input class="bg-gray-500 text-white w-full mt-6" type="file" name="replaced_image"
-                                        id="new_image" accept="image/*">
+                                    <input class="bg-gray-500 text-white w-full mt-6" type="file"
+                                        name="replaced_image" id="new_image" accept="image/*">
                                 </div>
-
                                 <div>
                                     <label for="product_description"
                                         class="block text-sm font-medium text-gray-700">Product
@@ -154,95 +192,48 @@
 
     <script>
         document.getElementById('new_image').addEventListener('change', function(event) {
-            const file = event.target.files[0]; // Get the selected file
+            const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader(); // Create a FileReader to read the file
+                const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Update the src attribute of the current image to the new file
                     document.getElementById('current_image').src = e.target.result;
                 };
-                reader.readAsDataURL(file); // Read the file as a Data URL (base64)
+                reader.readAsDataURL(file);
             }
         });
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('new_serial_number');
-            const tagsContainer = document.getElementById('serial_number_tags');
+    </script>
 
-            input.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Prevent form submission on Enter key
-                    addSerialNumber();
-                }
+    <script>
+        $(document).ready(function() {
+            $('#addRow').click(function() {
+                const newRow = `
+            <tr>
+                <td class="border border-gray-300 px-4 py-2 text-sm">
+                    <input type="text" name="barcodes[new][product_code][]"
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </td>
+                <td class="border border-gray-300 px-4 py-2 text-sm">
+                    <input type="text" name="barcodes[new][barcode][]"
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </td>
+                <td class="border border-gray-300 px-4 py-2 text-sm">
+                    <input type="number" name="barcodes[new][net_weight][]"
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" step="0.01">
+                </td>
+                <td class="border border-gray-300 px-4 py-2 text-sm">
+                    <input type="number" name="barcodes[new][length][]"
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" step="0.01">
+                </td>
+                <td class="border border-gray-300 px-4 py-2 text-sm text-center">
+                    <button type="button" class="text-red-500 remove-row">Remove</button>
+                </td>
+            </tr>`;
+                $('#barcodeTable tbody').append(newRow);
             });
 
-            function addSerialNumber() {
-                const serialNumber = input.value.trim();
-
-                if (serialNumber) {
-                    const tag = document.createElement('div');
-                    tag.className =
-                        "flex items-center justify-between bg-blue-800 text-white rounded-md px-2 py-1 m-1";
-
-                    // Create an input for the new serial number
-                    const serialInput = document.createElement('input');
-                    serialInput.type = 'text';
-                    serialInput.className = 'bg-blue-800 text-white border-0 serial-input';
-                    serialInput.value = serialNumber;
-                    serialInput.onblur = function() {
-                        updateSerialNumber(this);
-                    };
-
-                    // Create a hidden input for the serial number to submit with the form
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'serial_number[]';
-                    hiddenInput.value = serialNumber;
-
-                    // Create a remove button (X)
-                    const removeButton = document.createElement('button');
-                    removeButton.innerHTML = '&times;'; // X symbol
-                    removeButton.className = 'ml-2 text-white focus:outline-none';
-                    removeButton.type = 'button'; // Set type to "button" to prevent form submission
-                    removeButton.onclick = function(event) {
-                        event.preventDefault(); // Prevent default action of button
-                        hiddenInput.remove(); // Remove the hidden input
-                        tagsContainer.removeChild(tag); // Remove the tag from the tags container
-                    };
-
-                    // Append the input, hidden input, and remove button to the tag
-                    tag.appendChild(serialInput);
-                    tag.appendChild(hiddenInput); // Keep the hidden input in the tag
-                    tag.appendChild(removeButton);
-
-                    // Append the new tag to the tags container
-                    tagsContainer.appendChild(tag);
-
-                    // Clear the input field for the next entry
-                    input.value = '';
-                }
-            }
+            $('#barcodeTable').on('click', '.remove-row', function() {
+                $(this).closest('tr').remove();
+            });
         });
-
-        function updateSerialNumber(element) {
-            // Update the hidden input value to reflect the edited value
-            const tag = element.parentElement;
-            const hiddenInput = tag.querySelector('input[type="hidden"]');
-            hiddenInput.value = element.value.trim(); // Update hidden input
-        }
-
-        function removeExistingSerial(button) {
-            // Get the parent tag (the div containing the serial number)
-            const tag = button.parentElement;
-
-            // Remove the hidden input associated with this serial number
-            const hiddenInput = tag.querySelector('input[type="hidden"]');
-            if (hiddenInput) {
-                hiddenInput.remove(); // Remove the hidden input
-            }
-
-            // Remove the entire tag from the tags container
-            const tagsContainer = document.getElementById('serial_number_tags');
-            tagsContainer.removeChild(tag);
-        }
     </script>
 @endsection

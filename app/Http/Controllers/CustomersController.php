@@ -33,6 +33,7 @@ class CustomersController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'contact_person' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email|max:255',
             'phone_number' => 'required|string|max:15',
             'address' => 'required|string|max:500',
@@ -67,6 +68,7 @@ class CustomersController extends Controller
         $customers = Customers::find($id);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'contact_person' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:customers,email,' . $customers->id,
             'phone_number' => 'required|digits:11',
             'address' => 'required|string|max:255',

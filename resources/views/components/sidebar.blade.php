@@ -2,8 +2,8 @@
     <aside id="default-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidenav">
-        <div class="flex items-center justify-between h-20 px-3">
-            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="h-20">
+        <div class="flex items-center justify-center h-20 px-3">
+            <img src="{{ asset('assets/Solane Logo.png') }}" alt="Logo" class="h-12">
         </div>
         <div class="overflow-y-auto py-5 px-3 h-full bg-gray-200 border-r border-gray-200">
             <ul class="space-y-2">
@@ -31,7 +31,7 @@
                                 ],
                             ],
                             [
-                                'icon' => 'assets/sales.png',
+                                'icon' => 'assets/total sales.png',
                                 'label' => 'Sales',
                                 'route' => '',
                                 'dropdownItems' => [
@@ -40,7 +40,7 @@
                                 ],
                             ],
                             [
-                                'icon' => 'assets/sales.png',
+                                'icon' => 'assets/NEW PURCHASED.png',
                                 'label' => 'Purchase',
                                 'route' => '',
                                 'dropdownItems' => [
@@ -49,7 +49,7 @@
                                 ],
                             ],
                             [
-                                'icon' => 'assets/sales.png',
+                                'icon' => 'assets/NEW RETURNS.png',
                                 'label' => 'Returns',
                                 'route' => '',
                                 'dropdownItems' => [
@@ -58,19 +58,27 @@
                                     ['label' => 'Pull Out Records', 'route' => 'pullout'],
                                 ],
                             ],
+
                             [
-                                'icon' => 'assets/people.png',
-                                'label' => 'People',
+                                'icon' => 'assets/NEW CUSTOMERS.png',
+                                'label' => 'Customers',
                                 'route' => '',
                                 'dropdownItems' => [
                                     ['label' => 'Customers', 'route' => 'customers.index'],
                                     ['label' => 'Add Customer', 'route' => 'customers.create'],
+                                ],
+                            ],
+                            [
+                                'icon' => 'assets/NEW supplier.png',
+                                'label' => 'Suppliers',
+                                'route' => '',
+                                'dropdownItems' => [
                                     ['label' => 'Suppliers', 'route' => 'suppliers.index'],
                                     ['label' => 'Add Suppliers', 'route' => 'suppliers.create'],
                                 ],
                             ],
                             [
-                                'icon' => 'assets/people.png',
+                                'icon' => 'assets/NEW accounts.png',
                                 'label' => 'Accounts',
                                 'route' => '',
                                 'dropdownItems' => [
