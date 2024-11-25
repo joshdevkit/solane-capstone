@@ -22,12 +22,6 @@
                     @endif
                     <form action="{{ route('purchase.store') }}" method="POST">
                         @csrf
-                        <div class="mb-4">
-                            <label for="date_added" class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="date_added" id="date_added"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                value="{{ old('date_added') }}">
-                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="mb-4">
                                 <label for="purchase_no" class="block text-sm font-medium text-gray-700">Purchase
@@ -51,54 +45,47 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="is_received" class="block text-sm font-medium text-gray-700">Received</label>
-                                <select name="is_received" id="is_received"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                                    <option value="">Select</option>
-                                    <option value="1">
-                                        Received
-                                    </option>
-                                    <option value="0">
-                                        Not Received
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="order_tax" class="block text-sm font-medium text-gray-700">Order Tax</label>
-                                <input type="text" name="order_tax" id="order_tax"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('order_tax') }}">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="discount" class="block text-sm font-medium text-gray-700">Discount</label>
-                                <input type="text" name="discount" id="discount"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('discount') }}">
-                            </div>
-
-
-                            <div class="mb-4">
                                 <label for="shipping" class="block text-sm font-medium text-gray-700">Shipping</label>
                                 <input type="text" name="shipping" id="shipping"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
                                     value="{{ old('shipping') }}">
                             </div>
+
+                            <div class="mb-4">
+                                <label for="payment" class="block text-sm font-medium text-gray-700">Payment</label>
+                                <select name="payment" id="payment"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <option value="">Select</option>
+                                    <option value="Paid">
+                                        Paid
+                                    </option>
+                                    <option value="Pending">
+                                        Pending
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="mb-4">
+                                <label for="product_id" class="block text-sm font-medium text-gray-700">Product</label>
+                                <select name="product_id" id="product_id"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    <option value="">Select</option>
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <input type="text" name="quantity" id="quantity"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                                    value="{{ old('quantity') }}">
+                            </div>
                         </div>
-                        <div class="mb-4">
-                            <label for="payment" class="block text-sm font-medium text-gray-700">Payment</label>
-                            <select name="payment" id="payment"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                                <option value="">Select</option>
-                                <option value="Paid">
-                                    Paid
-                                </option>
-                                <option value="Pending">
-                                    Pending
-                                </option>
-                            </select>
-                        </div>
+
 
                         <div class="mb-4">
                             <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>

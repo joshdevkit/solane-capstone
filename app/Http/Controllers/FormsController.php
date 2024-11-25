@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Forms;
+use App\Models\Income;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class FormsController extends Controller
@@ -54,10 +56,48 @@ class FormsController extends Controller
         return view('admin.forms.create-pullout');
     }
 
+    public function getPulloutProducts()
+    {
+        $pulloutProducts = Income::with(['productBarcode' => function ($query) {
+            $query->where('net_weight', '50.00');
+        }])
+            ->whereHas('productBarcode', function ($query) {
+                $query->where('net_weight', '50.00');
+            })
+            ->where('tare_weight', '!=', null)
+            ->get();
+
+        return response()->json($pulloutProducts);
+    }
+
+
     public function delivery_form()
     {
+        // $products = Products::with(['barcodes' => function ($query) {
+        //     $query->where('net_weight', '50.00');
+        // }])
+        //     ->whereHas('barcodes', function ($query) {
+        //         $query->where('net_weight', '50.00');
+        //     })
+        //     ->get();
+
         return view('admin.forms.delivery-form');
     }
+
+    public function getProductsForDelivery()
+    {
+        $products = Products::with(['barcodes' => function ($query) {
+            $query->where('net_weight', '>', 50.00);
+        }])
+            ->whereHas('barcodes', function ($query) {
+                $query->where('net_weight', '>', 50.00);
+            })
+            ->get();
+
+        return response()->json($products);
+    }
+
+
 
 
     public function delivery_receipt()

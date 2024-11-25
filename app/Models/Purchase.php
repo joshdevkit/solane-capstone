@@ -10,12 +10,10 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date_added',
         'purchase_no',
+        'product_id',
+        'quantity',
         'supplier_id',
-        'is_received',
-        'order_tax',
-        'discount',
         'shipping',
         'payment',
         'notes'

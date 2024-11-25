@@ -64,9 +64,10 @@
                             </div>
                         </div>
                         <button type="button" id="add-row"
-                            class="mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Add
-                            Row</button>
-                        <table class="table mt-3 w-full table-auto ">
+                            class="mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                            Add Row
+                        </button>
+                        <table class="table mt-3 w-full table-auto">
                             <thead>
                                 <tr>
                                     <th class="border-b p-2 text-left">SEAL NUMBER</th>
@@ -75,41 +76,96 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody id="generated_data">
-
-                            </tbody>
+                            <tbody id="generated_data"></tbody>
                         </table>
                     </form>
-
-
-
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const addRowButton = document.getElementById('add-row');
-        const tbody = document.getElementById('generated_data');
+        $(document).ready(function() {
+            function fetchPulloutProducts() {
+                $.ajax({
+                    url: '{{ route('get-pullout-products') }}',
+                    method: 'GET',
+                    success: function(data) {
+                        console.log(data);
+                        data.forEach((item) => {
+                            addRow(item.product_barcode.barcode);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching pullout products:', error);
+                    },
+                });
+            }
 
-        addRowButton.addEventListener('click', function() {
-            const newRow = document.createElement('tr');
-
-            newRow.innerHTML = `
-                <td class=" p-2"><input type="text" class=" p-2 w-full" placeholder="Enter Seal Number" /></td>
-                <td class=" p-2"><input type="text" class=" p-2 w-full" placeholder="Enter Total Weight" /></td>
-                <td class=" p-2"><input type="text" class=" p-2 w-full" placeholder="Enter Tare Weight" /></td>
-                <td class=" p-2">
-                    <button class="remove-btn bg-red-500 text-white p-1 rounded-md hover:bg-red-600"><x-lucide-trash class='w-6 h-6' /></button>
+            function addRow(barcode = '') {
+                const newRow = `
+            <tr>
+                <td class="p-2">
+                    <select name="seal_number[]" class="p-2 w-full seal-number-dropdown">
+                        <option value="">Select Seal Number</option>
+                    </select>
                 </td>
-            `;
+                <td class="p-2">
+                    <input type="text" name="total_weight[]" class="p-2 w-full"  placeholder="Enter Total Weight" readonly />
+                </td>
+                <td class="p-2">
+                    <input type="text" name="tare_weight[]" class="p-2 w-full" placeholder="Enter Tare Weight" readonly />
+                </td>
+                <td class="p-2">
+                    <button type="button" class="remove-btn bg-red-500 text-white p-1 rounded-md hover:bg-red-600">
+                        <x-lucide-trash class="w-6 h-6" />
+                    </button>
+                </td>
+            </tr>
+        `;
 
-            tbody.appendChild(newRow);
+                const $row = $(newRow);
+                $('#generated_data').append($row);
 
-            const removeButton = newRow.querySelector('.remove-btn');
-            removeButton.addEventListener('click', function() {
-                tbody.removeChild(newRow);
+                populateSealNumbersDropdown($row.find('.seal-number-dropdown'));
+
+                $row.find('.seal-number-dropdown').on('change', function() {
+                    const selectedOption = $(this).find(':selected').data();
+                    $row.find('input[name="total_weight[]"]').val(selectedOption.netWeight || '');
+                    $row.find('input[name="tare_weight[]"]').val(selectedOption.tareWeight || '');
+                });
+
+                $row.find('.remove-btn').on('click', function() {
+                    $row.remove();
+                });
+            }
+
+            function populateSealNumbersDropdown($dropdown) {
+                $.ajax({
+                    url: '{{ route('get-pullout-products') }}',
+                    method: 'GET',
+                    success: function(data) {
+                        data.forEach((item) => {
+                            const option = `
+                        <option value="${item.product_barcode.barcode}"
+                                data-net-weight="${item.product_barcode.net_weight || ''}"
+                                data-tare-weight="${item.tare_weight || ''}">
+                            ${item.product_barcode.barcode}
+                        </option>`;
+                            $dropdown.append(option);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error populating seal numbers:', error);
+                    },
+                });
+            }
+
+            $('#add-row').on('click', function() {
+                addRow();
             });
+
+            fetchPulloutProducts();
         });
     </script>
 

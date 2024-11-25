@@ -61,7 +61,15 @@ Route::middleware('auth')->group(function () {
     Route::get('check-serial-existence', [ProductsController::class, 'checkSerialExistence'])->name('check-serial-existence');
     Route::post('product-data', [ProductsController::class, 'fetch_data'])->name('product-data');
 
+
+    Route::get('get-pullout-products', [FormsController::class, 'getPulloutProducts'])->name('get-pullout-products');
+
+    Route::get('get-delivery-products', [FormsController::class, 'getProductsForDelivery'])->name('get-delivery-products');
+
     // Route::get('predict-income', [ForecastController::class, 'predict']);
+
+
+    Route::post('send-low-stock-notifications', [AdminDashboardController::class, 'sendLowStockNotifications']);
 });
 
 

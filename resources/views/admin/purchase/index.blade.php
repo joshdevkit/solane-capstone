@@ -27,11 +27,9 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Reference No
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Supplier</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Purchase Status
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Total</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Payment Status
-                                </th>
+
+                                {{-- <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Total</th> --}}
+
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
@@ -39,25 +37,9 @@
                             @forelse ($purchases as $purchase)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ date('F d, Y', strtotime($purchase->date_added)) }}</td>
+                                        {{ date('F d, Y', strtotime($purchase->created_at)) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $purchase->purchase_no }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $purchase->supplier->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @if ($purchase->is_received == 1)
-                                            <span class="bg-green-500 text-white py-1 px-2 rounded">Received</span>
-                                        @else
-                                            <span class="bg-yellow-500 text-white py-1 px-2 rounded">Pending</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ number_format($purchase->total, 2) }}</td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @if ($purchase->payment == 'Pending')
-                                            <span class="bg-orange-500 text-white py-1 px-2 rounded">Pending</span>
-                                        @else
-                                            <span class="bg-green-500 text-white py-1 px-2 rounded">Paid</span>
-                                        @endif
-                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap flex flex-grow-1">
                                         <a href="{{ route('purchase.edit', $purchase) }}"
                                             class="text-blue-500 flex items-center mr-2">

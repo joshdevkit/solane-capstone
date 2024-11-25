@@ -89,27 +89,93 @@
     </div>
 
     <script>
-        const addRowButton = document.getElementById('add-row');
-        const tbody = document.getElementById('generated_data');
+        $(document).ready(function() {
+            let barcodeOptions = [];
 
-        addRowButton.addEventListener('click', function() {
-            const newRow = document.createElement('tr');
+            function fetchProductsForDelivery() {
+                $.ajax({
+                    url: '{{ route('get-delivery-products') }}',
+                    method: 'GET',
+                    success: function(data) {
+                        console.log(data);
+                        data.forEach(item => {
+                            item.barcodes.forEach(barcode => {
+                                barcodeOptions.push({
+                                    barcode: barcode.barcode,
+                                    netWeight: barcode.net_weight,
+                                    tareWeight: item.tare_weight || ''
+                                });
+                            });
+                        });
 
-            newRow.innerHTML = `
-                <td class=" p-2"><input type="text" class=" p-2 w-full" placeholder="Enter Seal Number" /></td>
-                <td class=" p-2"><input type="text" class=" p-2 w-full" placeholder="Enter Total Weight" /></td>
-                <td class=" p-2"><input type="text" class=" p-2 w-full" placeholder="Enter Tare Weight" /></td>
-                <td class=" p-2">
-                    <button class="remove-btn bg-red-500 text-white p-1 rounded-md hover:bg-red-600"><x-lucide-trash class='w-6 h-6' /></button>
+                        populateSealNumbersDropdown();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching pullout products:', error);
+                    }
+                });
+            }
+
+            function addRow() {
+                const newRow = `
+            <tr>
+                <td class="p-2">
+                    <select name="seal_number[]" class="p-2 w-full seal-number-dropdown">
+                        <option value="">Select Seal Number</option>
+                    </select>
                 </td>
+                <td class="p-2">
+                    <input type="text" name="total_weight[]" class="p-2 w-full" placeholder="Enter Total Weight" readonly />
+                </td>
+                <td class="p-2">
+                    <input type="text" name="tare_weight[]" class="p-2 w-full" placeholder="Enter Tare Weight" readonly />
+                </td>
+                <td class="p-2">
+                    <button type="button" class="remove-btn bg-red-500 text-white p-1 rounded-md hover:bg-red-600">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+        `;
+
+                const $row = $(newRow);
+                $('#generated_data').append($row);
+
+                populateSealNumbersDropdown($row.find('.seal-number-dropdown'));
+
+                $row.find('.seal-number-dropdown').on('change', function() {
+                    const selectedOption = $(this).find(':selected').data();
+                    $row.find('input[name="total_weight[]"]').val(selectedOption.netWeight || '');
+                    $row.find('input[name="tare_weight[]"]').val(selectedOption.tareWeight || '');
+                });
+
+                $row.find('.remove-btn').on('click', function() {
+                    $row.remove();
+                });
+            }
+
+            function populateSealNumbersDropdown($dropdown) {
+                if (!$dropdown) {
+                    $dropdown = $('.seal-number-dropdown');
+                }
+
+                barcodeOptions.forEach(option => {
+                    const optionMarkup = `
+                <option value="${option.barcode}"
+                        data-net-weight="${option.netWeight}"
+                        data-tare-weight="${option.tareWeight}">
+                    ${option.barcode}
+                </option>
             `;
+                    $dropdown.append(optionMarkup);
+                });
+            }
 
-            tbody.appendChild(newRow);
-
-            const removeButton = newRow.querySelector('.remove-btn');
-            removeButton.addEventListener('click', function() {
-                tbody.removeChild(newRow);
+            $('#add-row').on('click', function() {
+                addRow();
             });
+
+            fetchProductsForDelivery();
         });
     </script>
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sales_id');
             $table->unsignedBigInteger('serial_id');
             $table->date('date_return');
-            $table->unsignedBigInteger('customer_id');
+            $table->string('return_no');
             $table->string('attach_document')->nullable();
             $table->string('remarks')->nullable();
             $table->timestamps();
@@ -24,7 +24,6 @@ return new class extends Migration
 
             $table->foreign('sales_id')->references('id')->on('sales')->onDelete('cascade');
             $table->foreign('serial_id')->references('id')->on('product_barcodes')->onDelete('cascade');
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

@@ -7,11 +7,35 @@ use App\Charts\SampleProductChart;
 use App\Models\Income;
 use App\Models\ProductBarcodes;
 use App\Models\Products;
+use App\Models\User;
+use App\Notifications\LowStockNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
+
+    public function sendLowStockNotifications()
+    {
+        $lastNotificationTime = Cache::get('last_low_stock_notification_time');
+
+        if (!$lastNotificationTime || now()->diffInHours($lastNotificationTime) >= 24) {
+            $lowStockProducts = Products::where('quantity', '<', 20)->get();
+            if ($lowStockProducts->isNotEmpty()) {
+                $users = User::whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'Sales');
+                })->get();
+
+                foreach ($users as $user) {
+                    $user->notify(new LowStockNotification($lowStockProducts));
+                }
+                Cache::put('last_low_stock_notification_time', now());
+            }
+        }
+
+        return response()->json(['message' => 'Low stock notifications sent successfully!']);
+    }
 
     public function index(SampleProductChart $productChart, SampleComparisonChart $comparisonChart)
     {

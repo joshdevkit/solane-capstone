@@ -14,7 +14,6 @@ class ReturnItems extends Model
         'serial_id',
         'date_return',
         'return_no',
-        'customer_id',
         'attach_document',
         'remarks'
     ];

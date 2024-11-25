@@ -24,12 +24,6 @@
                         @csrf
                         @method('PATCH')
 
-                        <div class="mb-4">
-                            <label for="date_added" class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="date_added" id="date_added"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                value="{{ old('date_added', $purchase->date_added) }}">
-                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="mb-4">
                                 <label for="purchase_no" class="block text-sm font-medium text-gray-700">Purchase No</label>
@@ -51,53 +45,49 @@
                                 </select>
                             </div>
 
-                            <div class="mb-4">
-                                <label for="is_received" class="block text-sm font-medium text-gray-700">Received</label>
-                                <select name="is_received" id="is_received"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                                    <option value="">Select</option>
-                                    <option value="1"
-                                        {{ old('is_received', $purchase->is_received) == '1' ? 'selected' : '' }}>Received
-                                    </option>
-                                    <option value="0"
-                                        {{ old('is_received', $purchase->is_received) == '0' ? 'selected' : '' }}>Not
-                                        Received</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="order_tax" class="block text-sm font-medium text-gray-700">Order Tax</label>
-                                <input type="text" name="order_tax" id="order_tax"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('order_tax', $purchase->order_tax) }}">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="discount" class="block text-sm font-medium text-gray-700">Discount</label>
-                                <input type="text" name="discount" id="discount"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('discount', $purchase->discount) }}">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="shipping" class="block text-sm font-medium text-gray-700">Shipping</label>
-                                <input type="text" name="shipping" id="shipping"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                    value="{{ old('shipping', $purchase->shipping) }}">
-                            </div>
                         </div>
+
+                        <div class="mb-4">
+                            <label for="shipping" class="block text-sm font-medium text-gray-700">Shipping</label>
+                            <input type="text" name="shipping" id="shipping"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                                value="{{ old('shipping', $purchase->shipping) }}">
+                        </div>
+
 
                         <div class="mb-4">
                             <label for="payment" class="block text-sm font-medium text-gray-700">Payment</label>
                             <select name="payment" id="payment"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
                                 <option value="">Select</option>
-                                <option value="Paid"
-                                    {{ old('payment', $purchase->payment) == 'Paid' ? 'selected' : '' }}>Paid</option>
+                                <option value="Paid" {{ old('payment', $purchase->payment) == 'Paid' ? 'selected' : '' }}>
+                                    Paid</option>
                                 <option value="Pending"
                                     {{ old('payment', $purchase->payment) == 'Pending' ? 'selected' : '' }}>Pending
                                 </option>
                             </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div class="mb-4">
+                                <label for="product_id" class="block text-sm font-medium text-gray-700">Product</label>
+                                <select name="product_id" id="product_id"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
+                                    @foreach ($product as $prod)
+                                        <option value="{{ $prod->id }}"
+                                            {{ old('product_id', $purchase->product_id) == $prod->id ? 'selected' : '' }}>
+                                            {{ $prod->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <input type="text" name="quantity" id="quantity"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                                    value="{{ old('quantity', $purchase->quantity) }}">
+                            </div>
                         </div>
 
                         <div class="mb-4">

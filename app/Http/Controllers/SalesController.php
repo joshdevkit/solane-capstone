@@ -7,10 +7,12 @@ use App\Models\Customers;
 use App\Models\Income;
 use App\Models\ProductBarcodes;
 use App\Models\Products;
+use App\Models\ReturnItems;
 use App\Models\Returns;
 use App\Models\Sales;
 use App\Models\SalesItems;
 use Illuminate\Http\Request;
+use Phpml\Math\Product;
 
 class SalesController extends Controller
 {
@@ -189,9 +191,10 @@ class SalesController extends Controller
 
     public function pullout()
     {
+        $products = Products::all();
         $pullout = Income::with(['product', 'productBarcode', 'sales.customer'])->get();
 
-        return view('admin.purchase.pullout', compact('pullout'));
+        return view('admin.purchase.pullout', compact('pullout', 'products'));
     }
 
 
@@ -211,20 +214,11 @@ class SalesController extends Controller
 
     public function return_items($id)
     {
-        $total = Returns::count();
-        if ($total >= 0) {
-            $total++;
-        }
+        $total = ReturnItems::count();
+        $total++;
         $returnNo = "RN" . "-" . date('Y') . "-00" . $total;
-        $customer = Customers::all();
         $items = [];
         $salesItems = SalesItems::with(['productSerial', 'product'])->where('sales_id', $id)->get();
-        // foreach ($salesItems as $item) {
-        //     $items = $item;
-        // }
-        // $availableProductSerials = ProductBarcodes::where('product_id', '!=', $items->productSerial->barcode)->get();
-        // dd($availableProductSerials);
-
-        return view('admin.returns.create', compact('salesItems', 'returnNo', 'customer', 'id'));
+        return view('admin.returns.create', compact('salesItems', 'returnNo', 'id'));
     }
 }

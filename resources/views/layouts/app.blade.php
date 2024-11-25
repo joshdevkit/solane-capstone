@@ -197,6 +197,25 @@
         }
     </script>
 
+    <script>
+        // $(document).ready(function() {
+        //     $.ajax({
+        //         url: 'send-low-stock-notifications',
+        //         type: 'POST',
+        //         data: {
+        //             _token: '{{ csrf_token() }}'
+        //         },
+        //         success: function(response) {
+        //             console.log(response);
+        //             // console.log(response.message);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // });
+    </script>
+
 
 </body>
 

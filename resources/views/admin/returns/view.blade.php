@@ -41,7 +41,7 @@
                     </div>
 
                     <!-- Customer Information -->
-                    <div class="mb-6">
+                    {{-- <div class="mb-6">
                         <h2 class="text-xl font-semibold text-gray-800">Customer Information</h2>
                         <div class="flex justify-between border-b py-2">
                             <span class="text-sm text-gray-600">Customer Name:</span>
@@ -51,7 +51,7 @@
                             <span class="text-sm text-gray-600">Customer Email:</span>
                             <span class="font-medium text-gray-900">{{ $data->customer->email }}</span>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Return Details -->
                     <div class="mb-6">

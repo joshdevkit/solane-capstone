@@ -48,7 +48,6 @@ class ReturnsController extends Controller
             'product_serial' => 'required|string',
             'date_added' => 'required|date',
             'reference_no' => 'required|string',
-            'customer_id' => 'required|integer',
             'return_notes' => 'nullable|string',
         ]);
 
@@ -66,10 +65,9 @@ class ReturnsController extends Controller
         }
         ReturnItems::create([
             'sales_id' => $validated['sales_id'],
-            'serial_id' => $validated['product_serial'],
+            'serial_id' => $validated['sales_item_id'],
             'date_return' => $validated['date_added'],
             'return_no' => $validated['reference_no'],
-            'customer_id' => $validated['customer_id'],
             'remarks' => $validated['return_notes'],
         ]);
 

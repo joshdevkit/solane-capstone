@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePurchaseRequest;
+use App\Models\Products;
 use App\Models\Purchase;
 use App\Models\Suppliers;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ class PurchaseController extends Controller
      */
     public function create()
     {
+        $products = Products::all();
         $supplier = Suppliers::all();
-        return view('admin.purchase.create', compact('supplier'));
+        return view('admin.purchase.create', compact('supplier', 'products'));
     }
 
     /**
@@ -50,7 +52,8 @@ class PurchaseController extends Controller
     public function edit(Purchase $purchase)
     {
         $supplier = Suppliers::all();
-        return view('admin.purchase.edit', compact('purchase', 'supplier'));
+        $product = Products::all();
+        return view('admin.purchase.edit', compact('purchase', 'supplier', 'product'));
     }
 
     /**
@@ -59,24 +62,20 @@ class PurchaseController extends Controller
     public function update(Request $request, Purchase $purchase)
     {
         $validatedData = $request->validate([
-            'date_added' => 'required|date',
             'purchase_no' => 'required|string|max:255',
+            'product_id' => 'required|integer',
+            'quantity' => 'required|integer',
             'supplier_id' => 'required|exists:suppliers,id',
-            'is_received' => 'required|boolean',
-            'order_tax' => 'nullable|string',
-            'discount' => 'nullable|string',
             'shipping' => 'nullable|string',
-            'payment' => 'required|string|in:Paid,Pending',
+            'payment' => 'required',
             'notes' => 'nullable|string|max:1000',
         ]);
 
         $purchase->update([
-            'date_added' => $validatedData['date_added'],
             'purchase_no' => $validatedData['purchase_no'],
+            'product_id' => $validatedData['product_id'],
+            'quantity' => $validatedData['quantity'],
             'supplier_id' => $validatedData['supplier_id'],
-            'is_received' => $validatedData['is_received'],
-            'order_tax' => $validatedData['order_tax'],
-            'discount' => $validatedData['discount'],
             'shipping' => $validatedData['shipping'],
             'payment' => $validatedData['payment'],
             'notes' => $validatedData['notes'],

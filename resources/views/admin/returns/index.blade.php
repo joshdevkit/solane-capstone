@@ -25,7 +25,7 @@
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Product Serial
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Customer</th>
+                                {{-- <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Customer</th> --}}
                             </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -41,9 +41,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $return->serial->product->name }} {{ $return->serial->barcode }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    {{-- <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $return->customer->name }}
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @empty
                                 <tr>

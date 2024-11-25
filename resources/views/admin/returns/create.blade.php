@@ -47,10 +47,6 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                            <!-- sales items to retuns -->
-
-
-
                             <div class="mb-4">
                                 <label for="date_added" class="block text-sm font-medium text-gray-700">Date Return</label>
                                 <input type="date" name="date_added" id="date_added"
@@ -65,30 +61,14 @@
                                     value="{{ $returnNo }}">
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                            <div class="mb-4">
-                                <label for="customer_id" class="block text-sm font-medium text-gray-700">Customer</label>
-                                <select name="customer_id" id="customer_id"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                                    <option value="">Select Supplier</option>
-                                    @foreach ($customer as $cust)
-                                        <option value="{{ $cust->id }}"
-                                            {{ old('customer_id') == $cust->id ? 'selected' : '' }}>
-                                            {{ $cust->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="attach_document" class="block text-sm font-medium text-gray-700">Attach
-                                    Document</label>
-                                <input class="mt-1  w-full bg-gray-300 border-gray-200" type="file"
-                                    name="attach_document" id="attach_document">
-                            </div>
+
+                        <div class="mb-4">
+                            <label for="attach_document" class="block text-sm font-medium text-gray-700">Attach
+                                Document</label>
+                            <input class="mt-1  w-full bg-gray-300 border-gray-200" type="file" name="attach_document"
+                                id="attach_document">
                         </div>
-
-
 
                         <div class="mb-4">
                             <label for="return_notes" class="block text-sm font-medium text-gray-700">Remarks</label>

@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->date('date_added');
             $table->string('purchase_no');
+            $table->unsignedBigInteger('product_id');
+            $table->integer('quantity');
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_received');
-            $table->decimal('order_tax', 8, 2);
-            $table->decimal('discount', 8, 2);
             $table->string('shipping');
             $table->enum('payment', ['Pending', 'Paid']);
             $table->text('notes')->nullable();
             $table->timestamps();
+
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
