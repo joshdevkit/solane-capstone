@@ -14,11 +14,22 @@
                     @endif
                     <div class="flex justify-between items-center mb-4">
                         <h1 class="text-xl font-bold">Customer List</h1>
-                        <a href="{{ route('customers.create') }}"
-                            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
-                            Add Customers
-                        </a>
+
+                        <div class="flex items-center space-x-4">
+                            <select id="customer-group-filter" class="p-2 border rounded">
+                                <option value="">All</option>
+                                <option value="PRIVATE">Private</option>
+                                <option value="COMMERCIAL">Commercial</option>
+                            </select>
+
+
+                            <a href="{{ route('customers.create') }}"
+                                class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
+                                Add Customers
+                            </a>
+                        </div>
                     </div>
+
                     <table class="min-w-full text-center bg-white">
                         <thead>
                             <tr>
@@ -29,12 +40,13 @@
                                 <th class="px-4 py-2 border-b">Status</th>
                                 <th class="px-4 py-2 border-b">Last Order</th>
                                 <th class="px-4 py-2 border-b">Actions</th>
+                                <!-- Hidden customer_group column -->
+                                <th class="px-4 py-2 border-b hidden">Customer Group</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($customers as $customer)
-                                <tr>
-
+                                <tr data-customer-group="{{ $customer->customer_group }}">
                                     <td class="border-b px-4 py-2">{{ $customer->name }}</td>
                                     <td class="border-b px-4 py-2">{{ $customer->email }}</td>
                                     <td class="border-b px-4 py-2">{{ $customer->phone_number }}</td>
@@ -44,7 +56,6 @@
                                             $lastOrder = $customer->orders->last();
                                             $paymentStatus = $lastOrder ? $lastOrder->payment_status : 'No Order yet';
                                         @endphp
-
                                         <span
                                             class="{{ $paymentStatus === 'paid'
                                                 ? 'bg-green-100 text-green-600'
@@ -55,10 +66,7 @@
                                             {{ ucfirst($paymentStatus) }}
                                         </span>
                                     </td>
-
-                                    <td class="border-b px-4 py-2">
-                                        {{ $customer->recent_paid_orders_count }}
-                                    </td>
+                                    <td class="border-b px-4 py-2">{{ $customer->recent_paid_orders_count }}</td>
                                     <td class="py-2 px-4 border-b">
                                         <a href="{{ route('customers.show', ['customer' => $customer]) }}"
                                             class="text-yellow-500 mr-2 hover:text-yellow-700" title="View">
@@ -72,34 +80,12 @@
                                             onclick="showDeleteModal({{ $customer->id }})">
                                             <x-lucide-trash class="w-5 h-5 inline" />
                                         </button>
-
                                     </td>
-                                    <div id="delete-modal"
-                                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                                        <div class="bg-white rounded-lg p-6 shadow-lg">
-                                            <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
-                                            <p class="mb-4">Are you sure you want to delete this customer?</p>
-                                            <div class="flex justify-end space-x-4">
-                                                <button class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-                                                    onclick="hideDeleteModal()">
-                                                    Cancel
-                                                </button>
-                                                <form id="delete-form" action="" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
-                                                        Delete
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <td class="border-b px-4 py-2 hidden">{{ $customer->customer_group }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-
 
                 </div>
             </div>
@@ -120,4 +106,22 @@
             document.getElementById('delete-modal').classList.add('hidden');
         }
     </script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('#customer-group-filter').change(function() {
+                var selectedGroup = $(this).val().toLowerCase();
+                $('table tbody tr').each(function() {
+                    var customerGroup = $(this).data('customer-group').toLowerCase();
+                    if (selectedGroup === "" || customerGroup === selectedGroup) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+
 @endsection

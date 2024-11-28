@@ -41,12 +41,12 @@
             <button type="submit" class="bg-blue-500 text-white py-4 rounded-full w-full">Login</button>
         </div>
 
-        <div class="w-full mt-6 flex justify-center">
+        {{-- <div class="w-full mt-6 flex justify-center">
             <a href="{{ route('auto-login') }}"
                 class="px-6 py-3 bg-blue-500 text-white font-semibold text-lg rounded-lg shadow-lg hover:bg-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300 ease-in-out">
                 Login as Admin
             </a>
-        </div>
+        </div> --}}
 
     </form>
 </x-guest-layout>

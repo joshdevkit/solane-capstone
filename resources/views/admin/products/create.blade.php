@@ -3,6 +3,12 @@
 @section('title', 'ADD PRODUCTS - Dashboard')
 
 @section('content')
+    <style>
+        .cursor-not-allowed {
+            cursor: not-allowed !important;
+            opacity: 0.6;
+        }
+    </style>
     <div class="py-12 lg:ml-64 mx-auto max-w-full mt-20">
         <div class="w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -10,9 +16,20 @@
                     <div class="flex justify-between items-center mb-4">
                         <h1 class="text-xl font-bold">Add Product</h1>
                     </div>
+                    @if ($errors->any())
+                        <div class="mb-4">
+                            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+                                <p class="font-bold">Please fill the following errors:</p>
+                                <ul class="list-disc ml-10">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
                     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-
                         <div class="max-h-100 overflow-y-auto">
                             <div class="grid grid-cols-1 gap-4">
                                 <div class="mb-4">
@@ -25,9 +42,6 @@
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('category_id')
-                                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                                    @enderror
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
@@ -36,18 +50,12 @@
                                             Name</label>
                                         <input type="text" id="name" name="name"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                        @error('name')
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
                                     </div>
                                     <div>
                                         <label for="barcode_symbology"
                                             class="block text-sm font-medium text-gray-700">Product Code</label>
                                         <input type="text" id="barcode_symbology" name="barcode_symbology"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                        @error('barcode_symbology')
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
                                     </div>
                                 </div>
 
@@ -58,9 +66,6 @@
                                             Price</label>
                                         <input type="number" id="cost" name="cost" step="0.01"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                        @error('cost')
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
                                     </div>
 
                                     <div>
@@ -68,9 +73,6 @@
                                             Price</label>
                                         <input type="number" id="price" name="price" step="0.01"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                        @error('price')
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
                                     </div>
                                 </div>
 
@@ -84,9 +86,6 @@
                                         Description</label>
                                     <textarea id="product_description" name="product_description" rows="3"
                                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-                                    @error('product_description')
-                                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                                    @enderror
                                 </div>
                             </div>
 
@@ -153,61 +152,68 @@
     <script>
         $(document).ready(function() {
             let productCounter = 1;
+            let baseProductID = null;
 
-            $('#category_id').change(function() {
-                const categoryId = $(this).val();
+            function toggleAddRowButton() {
+                const isInputEmpty = $('#barcode_symbology').val().trim() === '';
+                const addRowButton = $('#add-row');
 
-                if (categoryId) {
-                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: '{{ route('get-product-data', '') }}/' + categoryId,
-                        method: 'GET',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken,
-                        },
-                        success: function(data) {
-                            console.log(data);
-                            if (data.exists) {
-                                console.log(`Total Quantity: ${data.total_quantity}`);
-                                productCounter = data.total_quantity + 1;
-                            } else {
-                                console.log('No products found for this category.');
-                                productCounter = 1;
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching product data:', error);
-                        },
-                    });
+                addRowButton.prop('disabled', isInputEmpty);
+
+                if (isInputEmpty) {
+                    addRowButton.addClass('cursor-not-allowed');
                 } else {
-                    console.log('Please select a category.');
+                    addRowButton.removeClass('cursor-not-allowed');
                 }
+            }
+
+            $('#barcode_symbology').on('input', function() {
+                toggleAddRowButton();
             });
 
+            toggleAddRowButton();
+
+
+
             $('#add-row').click(function() {
-                const productId = String(productCounter).padStart(3, '0');
+                const barcodeSymbology = $('#barcode_symbology').val().trim();
+
+                if (baseProductID === null && barcodeSymbology) {
+                    const numericValue = barcodeSymbology.match(/(\d+)$/);
+                    if (numericValue) {
+                        baseProductID = parseInt(numericValue[0], 10);
+                    } else {
+                        alert(
+                            'Invalid symbology. Please enter a valid numeric value in barcode_symbology.'
+                        );
+                        return;
+                    }
+                }
+
+                const nextProductID = baseProductID !== null ? String(baseProductID + productCounter)
+                    .padStart(3, '0') : '';
 
                 const newRow = `
-                    <tr>
-                        <td class="p-2">
-                            <input type="text" name="product_id[]" class="p-2 w-full" value="${productId}" readonly />
-                        </td>
-                        <td class="p-2">
-                            <input type="text" name="serial_no[]" class="p-2 w-full serial-no-input" />
-                            <span class="error-text text-red-500 text-xs hidden">This serial number already exists.</span>
-                        </td>
-                        <td class="p-2">
-                            <input type="text" name="net_weight[]" class="p-2 w-full" placeholder="Enter Net Weight" />
-                        </td>
-                        <td class="p-2">
-                            <input type="text" name="length[]" class="p-2 w-full" placeholder="Enter Length" />
-                        </td>
-                        <td class="p-2">
-                            <button class="remove-btn bg-red-500 text-white p-1 rounded-md hover:bg-red-600">
-                                <x-lucide-trash class="w-6 h-6" />
-                            </button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="p-2">
+                        <input type="text" name="product_id[]" class="p-2 w-full" value="${nextProductID}" readonly />
+                    </td>
+                    <td class="p-2">
+                        <input type="text" name="serial_no[]" class="p-2 w-full serial-no-input" />
+                        <span class="error-text text-red-500 text-xs hidden">This serial number already exists.</span>
+                    </td>
+                    <td class="p-2">
+                        <input type="text" name="net_weight[]" class="p-2 w-full" placeholder="Enter Net Weight" />
+                    </td>
+                    <td class="p-2">
+                        <input type="text" name="length[]" class="p-2 w-full" placeholder="Enter Length" />
+                    </td>
+                    <td class="p-2">
+                        <button class="remove-btn bg-red-500 text-white p-1 rounded-md hover:bg-red-600">
+                            <x-lucide-trash class="w-6 h-6" />
+                        </button>
+                    </td>
+                </tr>
                 `;
 
                 $('#dynamic_product').append(newRow);
@@ -253,8 +259,46 @@
                         inputField.next('.error-text').addClass('hidden');
                     }
                 });
-
             });
+
+
+            $('#barcode_symbology').on('change', function() {
+                var symbology = $(this).val()
+
+                $.ajax({
+                    url: '{{ route('check-code') }}',
+                    type: 'GET',
+                    data: {
+                        symbology: symbology
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response.exists) {
+                            $('#barcode_symbology')
+                                .addClass('border-red-500')
+                                .removeClass(
+                                    'border-gray-300');
+
+                            if (!$('#error-message').length) {
+                                $('#barcode_symbology')
+                                    .after(
+                                        '<span id="error-message" class="text-red-500 text-sm">This product code already exists.</span>'
+                                    );
+                            }
+                        } else {
+                            $('#barcode_symbology')
+                                .removeClass('border-red-500')
+                                .addClass('border-gray-300');
+
+                            $('#error-message').remove();
+                        }
+                    }
+                })
+
+            })
         });
     </script>
 @endsection

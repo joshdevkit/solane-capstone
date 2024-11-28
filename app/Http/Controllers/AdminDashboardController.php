@@ -22,14 +22,18 @@ class AdminDashboardController extends Controller
 
         if (!$lastNotificationTime || now()->diffInHours($lastNotificationTime) >= 24) {
             $lowStockProducts = Products::where('quantity', '<', 20)->get();
+
             if ($lowStockProducts->isNotEmpty()) {
                 $users = User::whereDoesntHave('roles', function ($query) {
                     $query->where('name', 'Sales');
                 })->get();
 
-                foreach ($users as $user) {
-                    $user->notify(new LowStockNotification($lowStockProducts));
+                foreach ($lowStockProducts as $product) {
+                    foreach ($users as $user) {
+                        $user->notify(new LowStockNotification($product));
+                    }
                 }
+
                 Cache::put('last_low_stock_notification_time', now());
             }
         }

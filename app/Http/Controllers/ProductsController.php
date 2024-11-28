@@ -135,6 +135,8 @@ class ProductsController extends Controller
             'price' => 'required|string',
             'product_description' => 'nullable|string',
             'replaced_image' => 'nullable|image',
+            'product_id.*' => 'required|string|max:255',
+            'serial_no.*' => 'required|string|max:255',
         ];
 
         $barcodes = $request->input('barcodes', []);
@@ -281,5 +283,23 @@ class ProductsController extends Controller
         $serialNo = $request->input('serial_no');
         $exists = ProductBarcodes::where('barcode', $serialNo)->exists();
         return response()->json(['exists' => $exists]);
+    }
+
+    public function check_code(Request $request)
+    {
+        $symbology = $request->input('symbology');
+
+        $numericSymbology = preg_replace('/\D/', '', $symbology);
+
+        $existsInSymbologies = Products::where('barcode_symbology', $symbology)->exists();
+        $existsInBarcodes = ProductBarcodes::where('product_code', $numericSymbology)->exists();
+
+        $exists = $existsInSymbologies || $existsInBarcodes;
+
+        return response()->json([
+            'exists' => $exists,
+            'exists_in_symbologies' => $existsInSymbologies,
+            'exists_in_barcodes' => $existsInBarcodes,
+        ]);
     }
 }
