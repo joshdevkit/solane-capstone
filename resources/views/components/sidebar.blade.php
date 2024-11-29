@@ -7,7 +7,6 @@
         </div>
         <div class="overflow-y-auto py-5 px-3 h-full bg-gray-200 border-r border-gray-200">
             <ul class="space-y-2">
-                {{-- Admin Sidebar Items --}}
                 @role('Admin')
                     @php
                         $sidebarItems = [
@@ -54,7 +53,6 @@
                                 'route' => '',
                                 'dropdownItems' => [
                                     ['label' => 'List Returns', 'route' => 'returns.index'],
-                                    // ['label' => 'Add Returns', 'route' => 'returns.create'],
                                     ['label' => 'Pull Out Records', 'route' => 'pullout'],
                                 ],
                             ],

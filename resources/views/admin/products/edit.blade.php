@@ -138,8 +138,6 @@
 
 
 
-
-
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label for="cost" class="block text-sm font-medium text-gray-700">Cost

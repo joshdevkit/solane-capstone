@@ -48,10 +48,12 @@
                                 </div>
                             </div>
                             <div>
-                                <label for="product_barcodes" class="block text-sm font-medium text-gray-700">Product
-                                    Barcodes</label>
+                                <label for="product_barcodes" class="block text-sm font-medium text-gray-700">
+                                    Product Barcodes
+                                </label>
                                 <div class="mt-2">
-                                    <table class="table-auto w-full border-collapse border border-gray-300">
+                                    <table id="barcodesTable"
+                                        class="table-auto w-full border-collapse border border-gray-300">
                                         <thead>
                                             <tr class="bg-gray-100">
                                                 <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">
@@ -65,14 +67,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($products->barcodes as $barcode)
+                                            @foreach ($barcodes as $barcode)
                                                 <tr>
                                                     <td class="border border-gray-300 px-4 py-2 text-sm">
-                                                        {{ $barcode->product_code }}
-                                                    </td>
+                                                        {{ $barcode->product_code }}</td>
                                                     <td class="border border-gray-300 px-4 py-2 text-sm">
-                                                        {{ $barcode->barcode }}
-                                                    </td>
+                                                        {{ $barcode->barcode }}</td>
                                                     <td class="border border-gray-300 px-4 py-2 text-sm">
                                                         {{ $barcode->net_weight ?? 'N/A' }}
                                                     </td>
@@ -80,18 +80,15 @@
                                                         {{ $barcode->length ?? 'N/A' }}
                                                     </td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="3"
-                                                        class="border border-gray-300 px-4 py-2 text-center text-sm text-gray-500">
-                                                        No barcodes available for this product.
-                                                    </td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
+                                    <div class="mt-4">
+                                        {{ $barcodes->links() }}
+                                    </div>
                                 </div>
                             </div>
+
 
 
 
@@ -146,4 +143,19 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#barcodesTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                lengthMenu: [10, 50, 100],
+                language: {
+                    emptyTable: "No barcodes (serial) available for this product.",
+                },
+            });
+        });
+    </script>
 @endsection

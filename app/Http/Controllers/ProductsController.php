@@ -107,9 +107,11 @@ class ProductsController extends Controller
     public function show($id)
     {
         $categories = Categories::all();
-        $products = Products::with('barcodes')->find($id);
-        return view('admin.products.show', compact('products', 'categories'));
+        $products = Products::find($id);
+        $barcodes = $products->barcodes()->paginate(10);
+        return view('admin.products.show', compact('products', 'categories', 'barcodes'));
     }
+
 
 
     /**
