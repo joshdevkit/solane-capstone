@@ -203,6 +203,7 @@
 
     <script>
         $(document).ready(function() {
+            // add row button
             $('#addRow').click(function() {
                 const newRow = `
             <tr>
