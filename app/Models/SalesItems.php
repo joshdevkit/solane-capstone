@@ -29,4 +29,9 @@ class SalesItems extends Model
     {
         return $this->hasMany(ProductBarcodes::class, 'product_id', 'product_id');
     }
+
+    public function sales()
+    {
+        return $this->belongsTo(Sales::class);
+    }
 }

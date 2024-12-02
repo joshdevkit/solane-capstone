@@ -24,8 +24,6 @@ class AddUserRequest extends FormRequest
         return [
             'employee_number' => 'required|string|unique:users,employee_number|max:20',
             'name' => 'required|string|max:100',
-            'address' => 'required|string|max:255',
-            'birthday' => 'required|date',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'role' => 'required'

@@ -9,6 +9,7 @@ use App\Http\Controllers\FormsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\ReturnsController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StockController;
@@ -65,6 +66,11 @@ Route::middleware('auth')->group(function () {
     Route::get('get-pullout-products', [FormsController::class, 'getPulloutProducts'])->name('get-pullout-products');
     Route::get('get-delivery-products', [FormsController::class, 'getProductsForDelivery'])->name('get-delivery-products');
     Route::post('send-low-stock-notifications', [AdminDashboardController::class, 'sendLowStockNotifications'])->name('notification');
+
+
+    //reports
+    Route::get('inventory-reports', [ReportsController::class, 'inventory'])->name('inventory.reports.generate');
+    Route::get('generate-inventory-reports', [ReportsController::class, 'generate_inventory'])->name('generate.inventory.reports');
 });
 
 

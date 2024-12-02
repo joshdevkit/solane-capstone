@@ -47,6 +47,20 @@ class Sales extends Model
 
     public function salesItems()
     {
-        return $this->hasMany(SalesItems::class);
+        return $this->hasMany(SalesItems::class, 'sales_id');
+    }
+
+
+    public function scopeFilterByDateRange($query, $startDate, $endDate)
+    {
+        if ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+
+        return $query;
     }
 }

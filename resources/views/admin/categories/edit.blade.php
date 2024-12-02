@@ -30,14 +30,6 @@
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="image" class="block text-gray-700">Category Image:</label>
-                            @if ($category->image)
-                                <img src="{{ asset($category->image) }}" alt="{{ $category->name }}"
-                                    class="w-16 h-16 object-cover mb-2">
-                            @endif
-                            <input type="file" name="image" id="image" class="block w-full text-gray-500">
-                        </div>
 
                         <div class="mt-6">
                             <button type="submit"
