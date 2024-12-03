@@ -14,6 +14,16 @@
                     @endif
                     <h1 class="text-xl font-bold mb-4">Sales List</h1>
                     <x-search-with-icon title="Sales Records" placeholder="Search for items..." onkeyup="filterTable()" />
+                    <div class="flex justify-end items-center mb-4">
+                        <a href="{{ route('sales.reports.generate') }}"
+                            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 mr-4">
+                            Generate Report
+                        </a>
+                        <a href="{{ route('sales.create') }}"
+                            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
+                            Add Sales
+                        </a>
+                    </div>
                     <table class="min-w-full divide-y table-auto">
                         <thead>
                             <tr>

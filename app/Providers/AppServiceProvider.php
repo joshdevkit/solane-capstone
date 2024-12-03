@@ -21,32 +21,5 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        $this->checkStockLevels();
-    }
-
-
-    protected function checkStockLevels()
-    {
-        $lastNotificationTime = Cache::get('last_low_stock_notification_time');
-
-        if (!$lastNotificationTime || now()->diffInHours($lastNotificationTime) >= 24) {
-            $lowStockProducts = Products::where('quantity', '<', 20)->get();
-
-            if ($lowStockProducts->isNotEmpty()) {
-                $users = User::whereDoesntHave('roles', function ($query) {
-                    $query->where('name', 'Sales');
-                })->get();
-
-                foreach ($lowStockProducts as $product) {
-                    foreach ($users as $user) {
-                        $user->notify(new LowStockNotification($product));
-                    }
-                }
-
-                Cache::put('last_low_stock_notification_time', now());
-            }
-        }
-    }
+    public function boot(): void {}
 }

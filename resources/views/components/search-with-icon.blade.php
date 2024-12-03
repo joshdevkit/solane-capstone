@@ -1,4 +1,5 @@
 <div class="flex justify-end items-center mb-4">
+
     <div
         class="mb-4 flex items-center border border-gray-300 rounded focus-within:border-blue-500 focus-within:bg-blue-50">
         <x-lucide-search class="w-5 h-5 text-gray-500 ml-2 focus:text-blue-500" />

@@ -16,6 +16,12 @@ class Income extends Model
         'amount',
     ];
 
+
+    protected $casts = [
+        'sales' => 'float',
+    ];
+
+
     public function product()
     {
         return $this->belongsTo(Products::class, 'product_id');

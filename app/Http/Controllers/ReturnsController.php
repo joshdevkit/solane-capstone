@@ -9,9 +9,16 @@ use App\Models\ReturnItems;
 use App\Models\Returns;
 use App\Models\SalesItems;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReturnsController extends Controller
 {
+    protected $pdf;
+
+    public function __construct(PDF $pdf)
+    {
+        $this->pdf = $pdf;
+    }
     /**
      * Display a listing of the resource.
      */

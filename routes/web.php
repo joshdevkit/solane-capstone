@@ -68,9 +68,28 @@ Route::middleware('auth')->group(function () {
     Route::post('send-low-stock-notifications', [AdminDashboardController::class, 'sendLowStockNotifications'])->name('notification');
 
 
-    //reports
+    //reports inventory - products
     Route::get('inventory-reports', [ReportsController::class, 'inventory'])->name('inventory.reports.generate');
     Route::get('generate-inventory-reports', [ReportsController::class, 'generate_inventory'])->name('generate.inventory.reports');
+
+    // returns reports
+    Route::get('returns-reports', [ReportsController::class, 'returns'])->name('returns.reports.generate');
+    Route::get('generate-returns-reports', [ReportsController::class, 'generate_returns'])->name('generate.reports.returns');
+
+    //purchase rerpots
+
+    Route::get('purchase-reports', [ReportsController::class, 'purchase'])->name('generate-purchase-reports');
+    Route::get('generate-purchase-reports', [ReportsController::class, 'generate_purchase'])->name('purchase-reports');
+
+    //sales reports button
+
+    Route::get('sales-reports', [ReportsController::class, 'sales'])->name('sales.reports.generate');
+    Route::get('generate-sales-reports', [ReportsController::class, 'generate_sales'])->name('generate.reports.sales');
+
+
+    //forecasting
+    Route::get('forecasting', [ForecastController::class, 'forecast'])->name('forecast');
+    Route::post('generate-forecast', [ForecastController::class, 'generateForecast'])->name('forecast.generate');
 });
 
 

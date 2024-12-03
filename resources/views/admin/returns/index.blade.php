@@ -16,6 +16,12 @@
                     <div class="flex justify-between items-center mb-4">
                         <h1 class="text-xl font-bold">Return List</h1>
                     </div>
+                    <div class="flex justify-end items-center mb-4">
+                        <a href="{{ route('returns.reports.generate') }}"
+                            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 mr-4">
+                            Generate Report
+                        </a>
+                    </div>
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr>

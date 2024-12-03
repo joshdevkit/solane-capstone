@@ -15,10 +15,17 @@
                     <x-search-with-icon title="Purchase Records" placeholder="Search for items..." onkeyup="filterTable()" />
                     <div class="flex justify-between items-center mb-4">
                         <h1 class="text-xl font-bold">Purchase List</h1>
-                        <a href="{{ route('purchase.create') }}"
-                            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
-                            Add Purchase
-                        </a>
+                        <div class="flex justify-end items-center mb-4">
+                            <a href="{{ route('generate-purchase-reports') }}"
+                                class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 mr-4">
+                                Generate Report
+                            </a>
+                            <a href="{{ route('purchase.create') }}"
+                                class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
+                                Add Purchase
+                            </a>
+                        </div>
+
                     </div>
                     <table class="min-w-full bg-white">
                         <thead>

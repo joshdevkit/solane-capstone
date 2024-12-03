@@ -90,6 +90,12 @@
                                 'route' => '',
                                 'dropdownItems' => [['label' => 'List of Forms', 'route' => 'uploaded-forms.index']],
                             ],
+                            [
+                                'icon' => 'assets/forecasting.png',
+                                'label' => 'Forecasting',
+                                'route' => '',
+                                'dropdownItems' => [['label' => 'Forecast', 'route' => 'forecast']],
+                            ],
                         ];
                     @endphp
                 @endrole

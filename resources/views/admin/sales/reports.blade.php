@@ -7,7 +7,7 @@
         <div class="w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-blue-700 text-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <h1 class="text-center text-2xl font-bold">INVENTORY REPORT</h1>
+                    <h1 class="text-center text-2xl font-bold">SALES REPORT</h1>
                 </div>
             </div>
             @if ($errors->any())
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             @endif
-            <form action="{{ route('generate.inventory.reports') }}" method="GET"
+            <form action="{{ route('generate.reports.sales') }}" method="GET"
                 class="mt-6 bg-white p-6 rounded-lg shadow-md">
                 <h2>Report Period</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
