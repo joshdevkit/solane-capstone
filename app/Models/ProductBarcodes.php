@@ -27,3 +27,4 @@ class ProductBarcodes extends Model
         return $this->hasOne(Income::class, 'serial_id', 'id');
     }
 }
+    

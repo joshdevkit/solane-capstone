@@ -28,7 +28,8 @@
                             </div>
                         </div>
                     @endif
-                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="actionForm" action="{{ route('products.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="max-h-100 overflow-y-auto">
                             <div class="grid grid-cols-1 gap-4">
@@ -219,47 +220,19 @@
                 $('#dynamic_product').append(newRow);
                 productCounter++;
 
-                $('.remove-btn').last().click(function() {
-                    $(this).closest('tr').remove();
-                });
 
-                $('.serial-no-input').last().on('input', function() {
-                    const serialNo = $(this).val().trim();
-                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-                    const inputField = $(this);
-
-                    if (serialNo) {
-                        $.ajax({
-                            url: '{{ route('check-serial-existence') }}',
-                            method: 'GET',
-                            data: {
-                                serial_no: serialNo
-                            },
-                            headers: {
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                            success: function(data) {
-                                if (data.exists) {
-                                    inputField.css('border', '1px solid red');
-                                    inputField.next('.error-text').removeClass(
-                                        'hidden');
-                                    inputField.addClass('mt-5')
-                                } else {
-                                    inputField.css('border', '');
-                                    inputField.next('.error-text').addClass('hidden');
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Error checking serial number:', error);
-                            }
-                        });
-                    } else {
-                        inputField.css('border', '');
-                        inputField.next('.error-text').addClass('hidden');
+                $('.serial-no-input').last().on('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
                 });
             });
+            $('.remove-btn').last().click(function() {
+                $(this).closest('tr').remove();
+            });
+
 
 
             $('#barcode_symbology').on('change', function() {
