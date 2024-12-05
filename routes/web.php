@@ -90,6 +90,16 @@ Route::middleware('auth')->group(function () {
     //forecasting
     Route::get('forecasting', [ForecastController::class, 'forecast'])->name('forecast');
     Route::post('generate-forecast', [ForecastController::class, 'generateForecast'])->name('forecast.generate');
+
+    //forms route
+    Route::prefix('forms')->group(function () {
+        Route::get('delivery/{id}/pdf', [FormsController::class, 'deliveryForm'])->name('delivery-form.pdf');
+        Route::post('delivery', [FormsController::class, 'storeDeliveryForm'])->name('delivery-form.store');
+        Route::post('pullout', [FormsController::class, 'storePulloutForm'])->name('pullout-form.store');
+        Route::get('pullout/{id}/pdf', [FormsController::class, 'pulloutForm'])->name('pullout-form.pdf');
+        Route::get('create-delivery-receipt', [FormsController::class, 'delivery_receipt'])->name('delivery-receipt');
+        Route::post('create-delivery-receipt', [FormsController::class, 'storeDeliveryReceipt'])->name('delivery-receipt.store');
+    });
 });
 
 
